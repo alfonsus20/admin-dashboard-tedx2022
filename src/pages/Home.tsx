@@ -16,7 +16,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import logo from "../assets/logo-tedx-hitam.svg";
-import bgLogin from "../assets/mic.jpg";
+import bgLogin from "../assets/mic.webp";
 
 const LoginSchema = Yup.object({
   email: Yup.string().email().required(),
