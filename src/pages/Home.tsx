@@ -16,7 +16,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import logo from "../assets/logo-tedx-hitam.svg";
-import bgLogin2 from "../assets/aatik-tasneem-zuyBRRlIKcI-unsplash.jpg";
+import bgLogin from "../assets/mic.jpg";
 
 const LoginSchema = Yup.object({
   email: Yup.string().email().required(),
@@ -87,7 +87,7 @@ const Home = () => {
       <Box
         display={{ base: "none", lg: "block" }}
         flex="1 1 auto"
-        bgImage={`url(${bgLogin2})`}
+        bgImage={`url(${bgLogin})`}
         bgSize="cover"
         bgPos="center"
       />
