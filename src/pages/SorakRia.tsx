@@ -9,10 +9,9 @@ import {
   Th,
   Td,
   TableCaption,
-  ButtonProps,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 
 const SorakRia = () => {
@@ -20,35 +19,6 @@ const SorakRia = () => {
   const page = searchParams.get("page");
 
   useEffect(() => {});
-
-  const baseStyles: ButtonProps = {
-    w: 7,
-    fontSize: "sm",
-  };
-
-  const normalStyles: ButtonProps = {
-    ...baseStyles,
-    _hover: {
-      bg: "green.300",
-    },
-    bg: "red.300",
-  };
-
-  const activeStyles: ButtonProps = {
-    ...baseStyles,
-    _hover: {
-      bg: "blue.300",
-    },
-    bg: "green.300",
-  };
-
-  const separatorStyles: ButtonProps = {
-    w: 7,
-    bg: "green.200",
-  };
-
-  const outerLimit = 2;
-  const innerLimit = 2;
 
   return (
     <Box>
@@ -96,4 +66,5 @@ const SorakRia = () => {
     </Box>
   );
 };
+
 export default SorakRia;
