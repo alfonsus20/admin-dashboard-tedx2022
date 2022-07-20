@@ -3,3 +3,8 @@ export type APIResponse<TData> = {
   data: TData;
   status: boolean;
 };
+
+export type APIResponsePaginated<TData> = APIResponse<{
+  count: number;
+  rows: TData[];
+}>;

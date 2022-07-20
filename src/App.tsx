@@ -4,6 +4,7 @@ import { UserStore } from "./context/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SorakRia from "./pages/SorakRia";
+import StudentSpeakerDetail from "./pages/StudentSpeakerDetail";
 import AuthRoute from "./routes/AuthRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -26,6 +27,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/dashboard" element={<Home />} />
               <Route path="/dashboard/sorak-ria" element={<SorakRia />} />
+              <Route path="/dashboard/sorak-ria/:id" element={<StudentSpeakerDetail />} />
             </Route>
           </Routes>
         </Router>

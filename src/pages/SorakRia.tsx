@@ -25,6 +25,7 @@ const SorakRia = () => {
     []
   );
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [totalData, setTotalData] = useState<number>(0);
 
   const page = searchParams.get("page");
   const { handleError } = useError();
@@ -33,7 +34,8 @@ const SorakRia = () => {
     try {
       setIsFetching(true);
       const { data } = await getStudentSpeakers({ page: page ? +page : 1 });
-      setStudentSpeakers(data.data);
+      setStudentSpeakers(data.data.rows);
+      setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
     } finally {
@@ -48,11 +50,10 @@ const SorakRia = () => {
   return (
     <Box>
       <Heading fontSize="3xl" mb={12}>
-        Sorak Ria
+        Sorak Ria Registrants
       </Heading>
       <TableContainer mb={4}>
         <Table>
-          {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
           <Thead>
             <Tr>
               <Th>No</Th>
@@ -90,7 +91,7 @@ const SorakRia = () => {
             ) : (
               studentSpeakers.map((studentSpeaker, idx) => (
                 <Tr key={studentSpeaker.id}>
-                  <Td>{idx + 1}</Td>
+                  <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
                   <Td>{studentSpeaker.nama_lengkap}</Td>
                   <Td>{studentSpeaker.jurusan}</Td>
                   <Td>{studentSpeaker.fakultas}</Td>
@@ -99,7 +100,7 @@ const SorakRia = () => {
                       as={Link}
                       to={`/dashboard/sorak-ria/${studentSpeaker.id}`}
                       colorScheme="blue"
-                      variant='outline'
+                      variant="outline"
                     >
                       Detail
                     </Button>
@@ -110,7 +111,7 @@ const SorakRia = () => {
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination totalData={100} rowsPerPage={10} />
+      <Pagination totalData={totalData} rowsPerPage={10} />
     </Box>
   );
 };
