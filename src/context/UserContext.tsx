@@ -24,6 +24,7 @@ export const UserStore = ({ children }: { children: React.ReactNode }) => {
       const { data } = await loginAdmin(body);
       setIsLoggedIn(true);
       localStorage.setItem("token", data.data.token);
+      api.defaults.headers.common["Authorization"] = data.data.token;
     } catch (e) {
       handleError(e);
     } finally {
@@ -34,6 +35,7 @@ export const UserStore = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
   };
 
   useMemo(() => {
