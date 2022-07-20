@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useUserContext } from "../context/UserContext";
 
 import logo from "../assets/logo-tedx-hitam.svg";
 import bgLogin from "../assets/mic.webp";
@@ -24,13 +25,15 @@ const LoginSchema = Yup.object({
 });
 
 const Login = () => {
+  const { login, isLoggingIn } = useUserContext();
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: LoginSchema,
-    onSubmit: (data) => {},
+    onSubmit: login,
     validateOnChange: false,
   });
 
@@ -77,6 +80,8 @@ const Login = () => {
                 color="white"
                 type="submit"
                 w="full"
+                loadingText="Loading..."
+                isDisabled={isLoggingIn}
               >
                 Login
               </Button>
