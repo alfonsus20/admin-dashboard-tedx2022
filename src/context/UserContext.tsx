@@ -6,7 +6,7 @@ import api from "../utils/api";
 
 const defaultValue = {
   isLoggedIn: false,
-  login: (body: LoginDto) => {},
+  login: (_: LoginDto) => {},
   logout: () => {},
   isLoggingIn: false,
 };
