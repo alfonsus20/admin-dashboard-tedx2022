@@ -6,5 +6,5 @@ import api from "../utils/api";
 export const loginAdmin = (
   data: LoginDto
 ): AxiosPromise<APIResponse<LoginResponse>> => {
-  return api.post("/admin/login", data);
+  return api.post("/login", data);
 };

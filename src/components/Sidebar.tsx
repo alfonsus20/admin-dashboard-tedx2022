@@ -23,7 +23,11 @@ const Sidebar = () => {
       bgColor="red.500"
       alignItems="strecth"
       flexDir="column"
+      flexShrink={0}
       rowGap={4}
+      maxH='100vh'
+      pos='sticky'
+      top={0}
     >
       <Heading
         color="white"

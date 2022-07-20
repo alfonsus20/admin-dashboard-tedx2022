@@ -2,6 +2,7 @@ import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
+import qs from "query-string";
 
 type Props = {
   totalData: number;
@@ -16,12 +17,14 @@ const Pagination = ({ totalData, rowsPerPage }: Props) => {
   const goPrev = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
+      setSearchParams(qs.stringify({ page: currentPage - 1 }));
     }
   };
 
   const goNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
+      setSearchParams(qs.stringify({ page: currentPage + 1 }));
     }
   };
 

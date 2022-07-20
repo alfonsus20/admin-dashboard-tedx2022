@@ -1,0 +1,27 @@
+export type StudentSpeaker = {
+  id: number;
+  is_checked: boolean;
+  nama_lengkap: string;
+  nim: string;
+  tempat_tanggal_lahir: string;
+  no_wa: string;
+  email: string;
+  fakultas: string;
+  jurusan: string;
+  angkatan: string;
+  media_sosial: string;
+  fasilitas: string;
+  perbedaan_ted_dan_tedx: string;
+  pandangan_tedx: string;
+  pembicara_tedx_dan_alasan: string;
+  dasar_jadi_pembicara: string;
+  ekspetasi_pembicara: string;
+  kearifan_lokal: string;
+  deskripsi_diri: string;
+  alasan_menjadi_pembicara: string;
+  link_cv: string;
+  link_ktm: string;
+  link_esai: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

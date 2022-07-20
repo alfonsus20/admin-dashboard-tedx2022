@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     return (
       <Flex minH="100vh" alignItems="stretch">
         <Sidebar />
-        <Box flex="1 1 auto" pt={12} pb={8} px={6}>
+        <Box flex="1 1 auto" pt={12} pb={8} px={6} overflowX="auto">
           <Outlet />
         </Box>
       </Flex>
