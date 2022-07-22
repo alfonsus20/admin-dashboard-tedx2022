@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import useError from "../hooks/useError";
-import { loginAdmin } from "../model/auth";
+import { loginAdmin } from "../models/auth";
 import { LoginDto } from "../types/entities/auth";
 import api from "../utils/api";
 

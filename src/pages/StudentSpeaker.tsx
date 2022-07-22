@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import useError from "../hooks/useError";
-import { getStudentSpeakers } from "../model/studentSpeaker";
+import { getStudentSpeakers } from "../models/studentSpeaker";
 import { StudentSpeaker } from "../types/entities/studentSpeaker";
 
 const StudentSpeakerPage = () => {

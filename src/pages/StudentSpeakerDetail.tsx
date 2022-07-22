@@ -9,15 +9,13 @@ import {
   Th,
   Td,
   Button,
-  Skeleton,
-  TableCaption,
   Icon,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useEffectOnce from "../hooks/useEffectOnce";
 import useError from "../hooks/useError";
-import { getStudentSpeakerById } from "../model/studentSpeaker";
+import { getStudentSpeakerById } from "../models/studentSpeaker";
 import { StudentSpeaker } from "../types/entities/studentSpeaker";
 import { titleCase } from "../utils/textHelper";
 import { isURL } from "../utils/urlHelper";
