@@ -53,7 +53,7 @@ const StudentSpeakerDetail = () => {
       <Heading fontSize="3xl" mb={12}>
         Detail Registrant
       </Heading>
-      <TableContainer mb={4}>
+      <TableContainer mb={4} whiteSpace='pre-wrap'>
         <Table>
           <Thead>
             <Tr>
@@ -76,7 +76,7 @@ const StudentSpeakerDetail = () => {
                   return (
                     <Tr>
                       <Td w="20%">{titleCase(key)}</Td>
-                      <Td w="80%">
+                      <Td w="80%" textAlign='justify'>
                         {isURL(currentRowData) ? (
                           <Button
                             as="a"
