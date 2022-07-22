@@ -19,7 +19,7 @@ import useError from "../hooks/useError";
 import { getStudentSpeakers } from "../model/studentSpeaker";
 import { StudentSpeaker } from "../types/entities/studentSpeaker";
 
-const SorakRia = () => {
+const StudentSpeakerPage = () => {
   const [searchParams] = useSearchParams();
   const [studentSpeakers, setStudentSpeakers] = useState<Array<StudentSpeaker>>(
     []
@@ -116,4 +116,4 @@ const SorakRia = () => {
   );
 };
 
-export default SorakRia;
+export default StudentSpeakerPage;

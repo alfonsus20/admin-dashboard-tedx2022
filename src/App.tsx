@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserStore } from "./context/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import SorakRia from "./pages/SorakRia";
+import StudentSpeaker from "./pages/StudentSpeaker";
 import StudentSpeakerDetail from "./pages/StudentSpeakerDetail";
 import AuthRoute from "./routes/AuthRoute";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -26,7 +26,7 @@ function App() {
             </Route>
             <Route element={<PrivateRoute />}>
               <Route path="/dashboard" element={<Home />} />
-              <Route path="/dashboard/sorak-ria" element={<SorakRia />} />
+              <Route path="/dashboard/sorak-ria" element={<StudentSpeaker />} />
               <Route path="/dashboard/sorak-ria/:id" element={<StudentSpeakerDetail />} />
             </Route>
           </Routes>
