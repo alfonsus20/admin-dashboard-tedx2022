@@ -11,12 +11,23 @@ import {
   Button,
   Skeleton,
   TableCaption,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import useError from "../hooks/useError";
-import { getStudentSpeakers } from "../models/studentSpeaker";
+import {
+  deleteStudentSpeaker,
+  getStudentSpeakers,
+} from "../models/studentSpeaker";
 import { StudentSpeaker } from "../types/entities/studentSpeaker";
 
 const StudentSpeakerPage = () => {
@@ -25,10 +36,14 @@ const StudentSpeakerPage = () => {
     []
   );
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [studentSpeakerToBeDeleted, setStudentSpeakerToBeDeleted] =
+    useState<null | StudentSpeaker>(null);
   const [totalData, setTotalData] = useState<number>(0);
 
   const page = searchParams.get("page");
   const { handleError } = useError();
+  const snackbar = useToast();
 
   const handleFetch = async () => {
     try {
@@ -41,6 +56,32 @@ const StudentSpeakerPage = () => {
     } finally {
       setIsFetching(false);
     }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await deleteStudentSpeaker(studentSpeakerToBeDeleted!.id);
+      snackbar({
+        title: "SUCCESS",
+        description: "Registrant was successfully deleted",
+        status: "success",
+      });
+      handleResetStudentSpeakerToBeDeleted();
+      await handleFetch();
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleShowDeleteModal = (student: StudentSpeaker) => {
+    setStudentSpeakerToBeDeleted(student);
+  };
+
+  const handleResetStudentSpeakerToBeDeleted = () => {
+    setStudentSpeakerToBeDeleted(null);
   };
 
   useEffect(() => {
@@ -100,9 +141,15 @@ const StudentSpeakerPage = () => {
                       as={Link}
                       to={`/dashboard/sorak-ria/${studentSpeaker.id}`}
                       colorScheme="blue"
-                      variant="outline"
+                      mr={3}
                     >
                       Detail
+                    </Button>
+                    <Button
+                      onClick={() => handleShowDeleteModal(studentSpeaker)}
+                      colorScheme="red"
+                    >
+                      Delete
                     </Button>
                   </Td>
                 </Tr>
@@ -112,6 +159,35 @@ const StudentSpeakerPage = () => {
         </Table>
       </TableContainer>
       <Pagination totalData={totalData} rowsPerPage={10} />
+
+      <Modal
+        onClose={handleResetStudentSpeakerToBeDeleted}
+        isOpen={!!studentSpeakerToBeDeleted}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Delete Confirmation</ModalHeader>
+          <ModalCloseButton isDisabled={isDeleting} />
+          <ModalBody>
+            Are you sure want to delete{" "}
+            <strong>{studentSpeakerToBeDeleted?.nama_lengkap}</strong> ?
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleResetStudentSpeakerToBeDeleted} mr={3}>
+              Cancel
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={handleDelete}
+              isLoading={isDeleting}
+              loadingText="Loading..."
+            >
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
