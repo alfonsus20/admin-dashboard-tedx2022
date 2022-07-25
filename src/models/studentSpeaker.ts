@@ -16,3 +16,9 @@ export const getStudentSpeakerById = (
 ): AxiosPromise<APIResponse<StudentSpeaker>> => {
   return api.get(`/student-speaker/id/${id}`);
 };
+
+export const deleteStudentSpeaker = (
+  id: number
+): AxiosPromise<APIResponse<null>> => {
+  return api.delete(`/student-speaker/${id}`);
+};

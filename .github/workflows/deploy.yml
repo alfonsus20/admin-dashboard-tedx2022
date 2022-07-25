@@ -6,6 +6,8 @@ jobs:
   web-deploy:
     name: 🎉 Deploy Production
     runs-on: ubuntu-latest
+    env:
+      VITE_BASE_URL: https://api.tedxuniversitasbrawijaya.com
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
@@ -14,7 +16,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "14"
-     
+
       - name: 🔨 Build Project
         run: |
           yarn install --frozen-lockfile

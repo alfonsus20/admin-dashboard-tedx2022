@@ -51,7 +51,7 @@ const StudentSpeakerDetail = () => {
       <Heading fontSize="3xl" mb={12}>
         Detail Registrant
       </Heading>
-      <TableContainer mb={4} whiteSpace='pre-wrap'>
+      <TableContainer mb={4} whiteSpace="pre-wrap">
         <Table>
           <Thead>
             <Tr>
@@ -64,9 +64,13 @@ const StudentSpeakerDetail = () => {
               Object.keys(studentData)
                 .filter(
                   (key) =>
-                    !["id", "is_checked", "createdAt", "updatedAt"].includes(
-                      key
-                    )
+                    ![
+                      "id",
+                      "is_checked",
+                      "createdAt",
+                      "updatedAt",
+                      "is_deleted",
+                    ].includes(key)
                 )
                 .map((key) => {
                   const currentRowData =
@@ -74,7 +78,7 @@ const StudentSpeakerDetail = () => {
                   return (
                     <Tr>
                       <Td w="20%">{titleCase(key)}</Td>
-                      <Td w="80%" textAlign='justify'>
+                      <Td w="80%" textAlign="justify">
                         {isURL(currentRowData) ? (
                           <Button
                             as="a"
