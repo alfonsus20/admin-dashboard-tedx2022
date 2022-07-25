@@ -174,7 +174,11 @@ const StudentSpeakerPage = () => {
             <strong>{studentSpeakerToBeDeleted?.nama_lengkap}</strong> ?
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handleResetStudentSpeakerToBeDeleted} mr={3}>
+            <Button
+              onClick={handleResetStudentSpeakerToBeDeleted}
+              mr={3}
+              isDisabled={isDeleting}
+            >
               Cancel
             </Button>
             <Button
