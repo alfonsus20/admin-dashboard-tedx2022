@@ -128,7 +128,11 @@ const StudentSpeakerPage = () => {
                   </Tr>
                 ))
             ) : studentSpeakers.length === 0 ? (
-              <TableCaption>Data tidak ditemukan</TableCaption>
+              <Tr>
+                <Td colSpan={5} textAlign="center">
+                  Data tidak tersedia
+                </Td>
+              </Tr>
             ) : (
               studentSpeakers.map((studentSpeaker, idx) => (
                 <Tr key={studentSpeaker.id}>
