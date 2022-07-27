@@ -55,7 +55,7 @@ const Pagination = ({ totalData, rowsPerPage }: Props) => {
         onClick={goNext}
         colorScheme="red"
         size="sm"
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || totalPages === 0}
       />
     </Flex>
   );
