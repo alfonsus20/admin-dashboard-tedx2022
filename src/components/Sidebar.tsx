@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading, Icon } from "@chakra-ui/react";
 import { FaUserGraduate, FaHome, FaSignOutAlt } from "react-icons/fa";
+import { BsFillCalendarEventFill } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
@@ -9,6 +10,11 @@ const LINKS = [
     pathname: "/dashboard/sorak-ria",
     icon: FaUserGraduate,
     label: "Sorak Ria",
+  },
+  {
+    pathname: "/dashboard/preevent",
+    icon: BsFillCalendarEventFill,
+    label: "Pre Event",
   },
 ];
 
@@ -25,8 +31,8 @@ const Sidebar = () => {
       flexDir="column"
       flexShrink={0}
       rowGap={4}
-      maxH='100vh'
-      pos='sticky'
+      maxH="100vh"
+      pos="sticky"
       top={0}
     >
       <Heading

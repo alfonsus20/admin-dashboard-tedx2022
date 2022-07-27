@@ -19,25 +19,21 @@ import {
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import useError from "../hooks/useError";
-import {
-  deleteStudentSpeaker,
-  getStudentSpeakers,
-} from "../models/studentSpeaker";
-import { StudentSpeaker } from "../types/entities/studentSpeaker";
+import { getAudienceList, deleteAudience } from "../models/preevent";
+import { Audience } from "../types/entities/preevent";
 
-const StudentSpeakerPage = () => {
+const Preevent = () => {
   const [searchParams] = useSearchParams();
-  const [studentSpeakers, setStudentSpeakers] = useState<Array<StudentSpeaker>>(
-    []
-  );
+  const [audienceList, setAudiences] = useState<Array<Audience>>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [studentSpeakerToBeDeleted, setStudentSpeakerToBeDeleted] =
-    useState<null | StudentSpeaker>(null);
+  const [audienceToBeDeleted, setAudienceToBeDeleted] =
+    useState<null | Audience>(null);
   const [totalData, setTotalData] = useState<number>(0);
 
   const page = searchParams.get("page");
@@ -47,8 +43,8 @@ const StudentSpeakerPage = () => {
   const handleFetch = async () => {
     try {
       setIsFetching(true);
-      const { data } = await getStudentSpeakers({ page: page ? +page : 1 });
-      setStudentSpeakers(data.data.rows);
+      const { data } = await getAudienceList({ page: page ? +page : 1 });
+      setAudiences(data.data.rows);
       setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
@@ -60,13 +56,13 @@ const StudentSpeakerPage = () => {
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      await deleteStudentSpeaker(studentSpeakerToBeDeleted!.id);
+      await deleteAudience(audienceToBeDeleted!.id);
       snackbar({
         title: "SUCCESS",
-        description: "Registrant was successfully deleted",
+        description: "Audience was successfully deleted",
         status: "success",
       });
-      handleResetStudentSpeakerToBeDeleted();
+      handleResetAudienceToBeDeleted();
       await handleFetch();
     } catch (error) {
       handleError(error);
@@ -75,12 +71,12 @@ const StudentSpeakerPage = () => {
     }
   };
 
-  const handleShowDeleteModal = (student: StudentSpeaker) => {
-    setStudentSpeakerToBeDeleted(student);
+  const handleShowDeleteModal = (student: Audience) => {
+    setAudienceToBeDeleted(student);
   };
 
-  const handleResetStudentSpeakerToBeDeleted = () => {
-    setStudentSpeakerToBeDeleted(null);
+  const handleResetAudienceToBeDeleted = () => {
+    setAudienceToBeDeleted(null);
   };
 
   useEffect(() => {
@@ -90,17 +86,20 @@ const StudentSpeakerPage = () => {
   return (
     <Box>
       <Heading fontSize="3xl" mb={12}>
-        Sorak Ria Registrants
+        Preevent Registrants
       </Heading>
       <TableContainer mb={4}>
         <Table>
           <Thead>
             <Tr>
               <Th>No</Th>
-              <Th>Nama Lengkap</Th>
-              <Th>Prodi</Th>
-              <Th>Fakultas</Th>
-              <Th>Aksi</Th>
+              <Th>Nama</Th>
+              <Th>Asal Instansi</Th>
+              <Th>No Telepon</Th>
+              <Th>Email</Th>
+              <Th>Asal Tahu Acara</Th>
+              <Th>Tanggal Daftar</Th>
+              <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -124,32 +123,47 @@ const StudentSpeakerPage = () => {
                     <Td>
                       <Skeleton height="20px" />
                     </Td>
+                    <Td>
+                      <Skeleton height="20px" />
+                    </Td>
+                    <Td>
+                      <Skeleton height="20px" />
+                    </Td>
+                    <Td>
+                      <Skeleton height="20px" />
+                    </Td>
                   </Tr>
                 ))
-            ) : studentSpeakers.length === 0 ? (
+            ) : audienceList.length === 0 ? (
               <Tr>
-                <Td colSpan={5} textAlign="center">
+                <Td colSpan={8} textAlign="center">
                   Data tidak tersedia
                 </Td>
               </Tr>
             ) : (
-              studentSpeakers.map((studentSpeaker, idx) => (
-                <Tr key={studentSpeaker.id}>
+              audienceList.map((audience, idx) => (
+                <Tr key={audience.id}>
                   <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
-                  <Td>{studentSpeaker.nama_lengkap}</Td>
-                  <Td>{studentSpeaker.jurusan}</Td>
-                  <Td>{studentSpeaker.fakultas}</Td>
+                  <Td>{audience.nama}</Td>
+                  <Td>{audience.asal_instansi}</Td>
+                  <Td>{audience.no_telepon}</Td>
+                  <Td>{audience.email}</Td>
+                  <Td>
+                    <ul>
+                      {audience.asal_tahu_acara
+                        .split(",")
+                        .filter((item) => item)
+                        .map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                    </ul>
+                  </Td>
+                  <Td>
+                    {dayjs(audience.createdAt).format("DD/MM/YYYY HH:mm")}
+                  </Td>
                   <Td>
                     <Button
-                      as={Link}
-                      to={`/dashboard/sorak-ria/${studentSpeaker.id}`}
-                      colorScheme="blue"
-                      mr={3}
-                    >
-                      Detail
-                    </Button>
-                    <Button
-                      onClick={() => handleShowDeleteModal(studentSpeaker)}
+                      onClick={() => handleShowDeleteModal(audience)}
                       colorScheme="red"
                     >
                       Delete
@@ -164,8 +178,8 @@ const StudentSpeakerPage = () => {
       <Pagination totalData={totalData} rowsPerPage={10} />
 
       <Modal
-        onClose={handleResetStudentSpeakerToBeDeleted}
-        isOpen={!!studentSpeakerToBeDeleted}
+        onClose={handleResetAudienceToBeDeleted}
+        isOpen={!!audienceToBeDeleted}
         isCentered
       >
         <ModalOverlay />
@@ -174,11 +188,11 @@ const StudentSpeakerPage = () => {
           <ModalCloseButton isDisabled={isDeleting} />
           <ModalBody>
             Are you sure want to delete{" "}
-            <strong>{studentSpeakerToBeDeleted?.nama_lengkap}</strong> ?
+            <strong>{audienceToBeDeleted?.nama}</strong> ?
           </ModalBody>
           <ModalFooter>
             <Button
-              onClick={handleResetStudentSpeakerToBeDeleted}
+              onClick={handleResetAudienceToBeDeleted}
               mr={3}
               isDisabled={isDeleting}
             >
@@ -199,4 +213,4 @@ const StudentSpeakerPage = () => {
   );
 };
 
-export default StudentSpeakerPage;
+export default Preevent;
