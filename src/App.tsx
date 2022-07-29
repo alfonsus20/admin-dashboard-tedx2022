@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserStore } from "./context/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 import Preevent from "./pages/Preevent";
 import StudentSpeaker from "./pages/StudentSpeaker";
 import StudentSpeakerDetail from "./pages/StudentSpeakerDetail";
@@ -33,6 +34,7 @@ function App() {
                 element={<StudentSpeakerDetail />}
               />
               <Route path="/dashboard/preevent/" element={<Preevent />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </Router>
