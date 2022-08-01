@@ -18,25 +18,24 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-} from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import Pagination from "../components/Pagination";
-import useError from "../hooks/useError";
-import { getAudienceList, deleteAudience } from "../models/preevent";
-import { Audience } from "../types/entities/preevent";
+} from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Pagination from '../components/Pagination';
+import useError from '../hooks/useError';
+import { getAudienceList, deleteAudience } from '../models/preevent';
+import { Audience } from '../types/entities/preevent';
 
 const Preevent = () => {
   const [searchParams] = useSearchParams();
   const [audienceList, setAudiences] = useState<Array<Audience>>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [audienceToBeDeleted, setAudienceToBeDeleted] =
-    useState<null | Audience>(null);
+  const [audienceToBeDeleted, setAudienceToBeDeleted] = useState<null | Audience>(null);
   const [totalData, setTotalData] = useState<number>(0);
 
-  const page = searchParams.get("page");
+  const page = searchParams.get('page');
   const { handleError } = useError();
   const snackbar = useToast();
 
@@ -53,14 +52,18 @@ const Preevent = () => {
     }
   };
 
+  const handleResetAudienceToBeDeleted = () => {
+    setAudienceToBeDeleted(null);
+  };
+
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
       await deleteAudience(audienceToBeDeleted!.id);
       snackbar({
-        title: "SUCCESS",
-        description: "Audience was successfully deleted",
-        status: "success",
+        title: 'SUCCESS',
+        description: 'Audience was successfully deleted',
+        status: 'success',
       });
       handleResetAudienceToBeDeleted();
       await handleFetch();
@@ -73,10 +76,6 @@ const Preevent = () => {
 
   const handleShowDeleteModal = (student: Audience) => {
     setAudienceToBeDeleted(student);
-  };
-
-  const handleResetAudienceToBeDeleted = () => {
-    setAudienceToBeDeleted(null);
   };
 
   useEffect(() => {
@@ -103,6 +102,7 @@ const Preevent = () => {
             </Tr>
           </Thead>
           <Tbody>
+            {/* eslint-disable-next-line no-nested-ternary */}
             {isFetching ? (
               Array(10)
                 .fill(null)
@@ -151,15 +151,15 @@ const Preevent = () => {
                   <Td>
                     <ul>
                       {audience.asal_tahu_acara
-                        .split(",")
+                        .split(',')
                         .filter((item) => item)
-                        .map((item, idx) => (
-                          <li key={idx}>{item}</li>
+                        .map((item, idxInner) => (
+                          <li key={idxInner}>{item}</li>
                         ))}
                     </ul>
                   </Td>
                   <Td>
-                    {dayjs(audience.createdAt).format("DD/MM/YYYY HH:mm")}
+                    {dayjs(audience.createdAt).format('DD/MM/YYYY HH:mm')}
                   </Td>
                   <Td>
                     <Button
@@ -187,8 +187,11 @@ const Preevent = () => {
           <ModalHeader>Delete Confirmation</ModalHeader>
           <ModalCloseButton isDisabled={isDeleting} />
           <ModalBody>
-            Are you sure want to delete{" "}
-            <strong>{audienceToBeDeleted?.nama}</strong> ?
+            Are you sure want to delete
+            {' '}
+            <strong>{audienceToBeDeleted?.nama}</strong>
+            {' '}
+            ?
           </ModalBody>
           <ModalFooter>
             <Button

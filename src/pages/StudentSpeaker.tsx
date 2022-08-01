@@ -18,16 +18,16 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import Pagination from "../components/Pagination";
-import useError from "../hooks/useError";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import Pagination from '../components/Pagination';
+import useError from '../hooks/useError';
 import {
   deleteStudentSpeaker,
   getStudentSpeakers,
-} from "../models/studentSpeaker";
-import { StudentSpeaker } from "../types/entities/studentSpeaker";
+} from '../models/studentSpeaker';
+import { StudentSpeaker } from '../types/entities/studentSpeaker';
 
 const StudentSpeakerPage = () => {
   const [searchParams] = useSearchParams();
@@ -36,11 +36,10 @@ const StudentSpeakerPage = () => {
   );
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [studentSpeakerToBeDeleted, setStudentSpeakerToBeDeleted] =
-    useState<null | StudentSpeaker>(null);
+  const [studentSpeakerToBeDeleted, setStudentSpeakerToBeDeleted] = useState<null | StudentSpeaker>(null);
   const [totalData, setTotalData] = useState<number>(0);
 
-  const page = searchParams.get("page");
+  const page = searchParams.get('page');
   const { handleError } = useError();
   const snackbar = useToast();
 
@@ -57,14 +56,18 @@ const StudentSpeakerPage = () => {
     }
   };
 
+  const handleResetStudentSpeakerToBeDeleted = () => {
+    setStudentSpeakerToBeDeleted(null);
+  };
+
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
       await deleteStudentSpeaker(studentSpeakerToBeDeleted!.id);
       snackbar({
-        title: "SUCCESS",
-        description: "Registrant was successfully deleted",
-        status: "success",
+        title: 'SUCCESS',
+        description: 'Registrant was successfully deleted',
+        status: 'success',
       });
       handleResetStudentSpeakerToBeDeleted();
       await handleFetch();
@@ -77,10 +80,6 @@ const StudentSpeakerPage = () => {
 
   const handleShowDeleteModal = (student: StudentSpeaker) => {
     setStudentSpeakerToBeDeleted(student);
-  };
-
-  const handleResetStudentSpeakerToBeDeleted = () => {
-    setStudentSpeakerToBeDeleted(null);
   };
 
   useEffect(() => {
@@ -104,6 +103,7 @@ const StudentSpeakerPage = () => {
             </Tr>
           </Thead>
           <Tbody>
+            {/* eslint-disable-next-line no-nested-ternary */}
             {isFetching ? (
               Array(10)
                 .fill(null)
@@ -173,8 +173,11 @@ const StudentSpeakerPage = () => {
           <ModalHeader>Delete Confirmation</ModalHeader>
           <ModalCloseButton isDisabled={isDeleting} />
           <ModalBody>
-            Are you sure want to delete{" "}
-            <strong>{studentSpeakerToBeDeleted?.nama_lengkap}</strong> ?
+            Are you sure want to delete
+            {' '}
+            <strong>{studentSpeakerToBeDeleted?.nama_lengkap}</strong>
+            {' '}
+            ?
           </ModalBody>
           <ModalFooter>
             <Button

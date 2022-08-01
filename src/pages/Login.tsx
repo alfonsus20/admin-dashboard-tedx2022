@@ -11,13 +11,13 @@ import {
   Input,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useUserContext } from "../context/UserContext";
+} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useUserContext } from '../context/UserContext';
 
-import logo from "../assets/logo-tedx-hitam.svg";
-import bgLogin from "../assets/mic.webp";
+import logo from '../assets/logo-tedx-hitam.svg';
+import bgLogin from '../assets/mic.webp';
 
 const LoginSchema = Yup.object({
   email: Yup.string().email().required(),
@@ -29,8 +29,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema: LoginSchema,
     onSubmit: login,
@@ -40,7 +40,7 @@ const Login = () => {
   return (
     <Flex minH="100vh" justifyContent="center" m={0}>
       <Box
-        flex={{ base: "1 1 auto", lg: "0 0 500px" }}
+        flex={{ base: '1 1 auto', lg: '0 0 500px' }}
         px={8}
         py={10}
         mb={24}
@@ -90,7 +90,7 @@ const Login = () => {
         </Container>
       </Box>
       <Box
-        display={{ base: "none", lg: "block" }}
+        display={{ base: 'none', lg: 'block' }}
         flex="1 1 auto"
         bgImage={`url(${bgLogin})`}
         bgSize="cover"

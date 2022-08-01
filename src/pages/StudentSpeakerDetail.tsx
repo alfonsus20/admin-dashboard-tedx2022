@@ -10,18 +10,19 @@ import {
   Td,
   Button,
   Icon,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import useEffectOnce from "../hooks/useEffectOnce";
-import useError from "../hooks/useError";
-import { getStudentSpeakerById } from "../models/studentSpeaker";
-import { StudentSpeaker } from "../types/entities/studentSpeaker";
-import { titleCase } from "../utils/textHelper";
-import { isURL } from "../utils/urlHelper";
-import { FaFileDownload } from "react-icons/fa";
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { FaFileDownload } from 'react-icons/fa';
+import useEffectOnce from '../hooks/useEffectOnce';
+import useError from '../hooks/useError';
+import { getStudentSpeakerById } from '../models/studentSpeaker';
+import { StudentSpeaker } from '../types/entities/studentSpeaker';
+import { titleCase } from '../utils/textHelper';
+import { isURL } from '../utils/urlHelper';
 
 const StudentSpeakerDetail = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [studentData, setStudentData] = useState<StudentSpeaker | undefined>(
     undefined
@@ -60,21 +61,19 @@ const StudentSpeakerDetail = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {studentData &&
-              Object.keys(studentData)
+            {studentData
+              && Object.keys(studentData)
                 .filter(
-                  (key) =>
-                    ![
-                      "id",
-                      "is_checked",
-                      "createdAt",
-                      "updatedAt",
-                      "is_deleted",
-                    ].includes(key)
+                  (key) => ![
+                    'id',
+                    'is_checked',
+                    'createdAt',
+                    'updatedAt',
+                    'is_deleted',
+                  ].includes(key)
                 )
                 .map((key) => {
-                  const currentRowData =
-                    studentData[key as keyof typeof studentData].toString();
+                  const currentRowData = studentData[key as keyof typeof studentData].toString();
                   return (
                     <Tr>
                       <Td w="20%">{titleCase(key)}</Td>
