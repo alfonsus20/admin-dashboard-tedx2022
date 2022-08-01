@@ -1,8 +1,10 @@
-import { Box, Flex, Icon, IconButton } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
-import qs from "query-string";
+import {
+  Box, Flex, Icon, IconButton
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
+import qs from 'query-string';
 
 type Props = {
   totalData: number;
@@ -29,11 +31,10 @@ const Pagination = ({ totalData, rowsPerPage }: Props) => {
   };
 
   useEffect(() => {
-    const page = searchParams.get("page");
+    const page = searchParams.get('page');
     if (page) {
       setCurrentPage(Number(page));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -47,7 +48,10 @@ const Pagination = ({ totalData, rowsPerPage }: Props) => {
         disabled={currentPage === 1}
       />
       <Box>
-        {currentPage} of {totalPages || 1}
+        {currentPage}
+        {' '}
+        of
+        {totalPages || 1}
       </Box>
       <IconButton
         icon={<Icon as={FaChevronRight} fontSize={16} />}

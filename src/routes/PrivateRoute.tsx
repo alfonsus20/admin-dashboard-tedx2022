@@ -1,7 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { Navigate, Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import { useUserContext } from "../context/UserContext";
+import { Box, Flex } from '@chakra-ui/react';
+import { Navigate, Outlet } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
+import { useUserContext } from '../context/UserContext';
 
 const PrivateRoute = () => {
   const { isLoggedIn } = useUserContext();
