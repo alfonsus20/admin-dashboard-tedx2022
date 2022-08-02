@@ -51,6 +51,7 @@ const Pagination = ({ totalData, rowsPerPage }: Props) => {
         {currentPage}
         {' '}
         of
+        {' '}
         {totalPages || 1}
       </Box>
       <IconButton

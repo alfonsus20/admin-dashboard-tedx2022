@@ -9,6 +9,8 @@ export const getAudienceList = ({
   limit = 10,
 }: PaginationParams): AxiosPromise<APIResponsePaginated<Audience>> => api.get('/audien/paginate', { params: { page, limit } });
 
+export const getAllAudience = (): AxiosPromise<APIResponse<Audience[]>> => api.get('/audien/data/all');
+
 export const getAudienceById = (
   id: number
 ): AxiosPromise<APIResponse<Audience>> => api.get(`/audien/data/${id}`);
