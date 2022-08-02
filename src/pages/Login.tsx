@@ -81,7 +81,7 @@ const Login = () => {
                 type="submit"
                 w="full"
                 loadingText="Loading..."
-                isDisabled={isLoggingIn}
+                isLoading={isLoggingIn}
               >
                 Login
               </Button>
