@@ -18,19 +18,26 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Flex,
+  Icon,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import { useSearchParams } from 'react-router-dom';
+import { FaFileDownload } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
+import useEffectOnce from '../hooks/useEffectOnce';
 import useError from '../hooks/useError';
-import { getAudienceList, deleteAudience } from '../models/preevent';
+import { getAudienceList, deleteAudience, getAllAudience } from '../models/preevent';
 import { Audience } from '../types/entities/preevent';
 
 const Preevent = () => {
   const [searchParams] = useSearchParams();
-  const [audienceList, setAudiences] = useState<Array<Audience>>([]);
+  const [audienceList, setAudienceList] = useState<Array<Audience>>([]);
+  const [allAudience, setAllAudience] = useState<Array<Audience>>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isFetchingAll, setIsFetchingAll] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [audienceToBeDeleted, setAudienceToBeDeleted] = useState<null | Audience>(null);
   const [totalData, setTotalData] = useState<number>(0);
@@ -43,12 +50,25 @@ const Preevent = () => {
     try {
       setIsFetching(true);
       const { data } = await getAudienceList({ page: page ? +page : 1 });
-      setAudiences(data.data.rows);
+      setAudienceList(data.data.rows);
       setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
     } finally {
       setIsFetching(false);
+    }
+  };
+
+  const handleFetchAll = async () => {
+    try {
+      setIsFetchingAll(true);
+      const { data } = await getAllAudience();
+      console.log(data.data);
+      setAllAudience(data.data);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsFetchingAll(false);
     }
   };
 
@@ -82,11 +102,29 @@ const Preevent = () => {
     handleFetch();
   }, [page]);
 
+  useEffectOnce(() => {
+    handleFetchAll();
+  });
+
+  const csvData = useMemo(() => {
+    const array : string[][] = [];
+    array.push(Object.keys(allAudience[0] || {}));
+
+    allAudience.forEach((audience) => {
+      array.push(Object.values(audience).map((data) => data.toString()));
+    });
+
+    return array;
+  }, [allAudience]);
+
   return (
     <Box>
-      <Heading fontSize="3xl" mb={12}>
+      <Heading fontSize="3xl" mb={6}>
         Preevent Registrants
       </Heading>
+      <Flex mb={6}>
+        <Button ml="auto" leftIcon={<Icon as={FaFileDownload} />} colorScheme="green" filename={`audience_data_${dayjs().format('DD/MM/YYYY HH:mm')}`} as={CSVLink} data={csvData} isLoading={isFetchingAll} loadingText="Loading...">Download CSV</Button>
+      </Flex>
       <TableContainer mb={4}>
         <Table>
           <Thead>
