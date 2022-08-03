@@ -117,7 +117,7 @@ const Preevent = () => {
           isLoading={isFetchingAll}
           csvData={allAudience}
           headers={{
-            id: 'ID', nama: 'Nama', email: 'Email', no_telepon: 'Nomor Telepon', asal_instansi: 'Asal Instansi', asal_tahu_acara: 'Asal Tahu Acara', createdAt: 'Waktu Pendaftaran'
+            id: 'ID', nama: 'Nama', email: 'Email', no_telepon: 'Nomor Telepon', asal_instansi: 'Asal Instansi', asal_tahu_acara: 'Asal Tahu Acara', createdAt: 'Waktu Pendaftaran', updatedAt: 'Waktu Terakhir Update'
           }}
         />
       </Flex>
