@@ -19,18 +19,16 @@ import {
   ModalBody,
   ModalFooter,
   Flex,
-  Icon,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useState } from 'react';
-import { CSVLink } from 'react-csv';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FaFileDownload } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
 import useEffectOnce from '../hooks/useEffectOnce';
 import useError from '../hooks/useError';
 import { getAudienceList, deleteAudience, getAllAudience } from '../models/preevent';
 import { Audience } from '../types/entities/preevent';
+import ExportToExcel from '../components/ExportToExcel';
 
 const Preevent = () => {
   const [searchParams] = useSearchParams();
@@ -106,16 +104,7 @@ const Preevent = () => {
     handleFetchAll();
   });
 
-  const csvData = useMemo(() => {
-    const array : string[][] = [];
-    array.push(Object.keys(allAudience[0] || {}));
-
-    allAudience.forEach((audience) => {
-      array.push(Object.values(audience).map((data) => data.toString()));
-    });
-
-    return array;
-  }, [allAudience]);
+  // const headers = useMemo(() =>, []);
 
   return (
     <Box>
@@ -123,7 +112,14 @@ const Preevent = () => {
         Preevent Registrants
       </Heading>
       <Flex mb={6}>
-        <Button ml="auto" leftIcon={<Icon as={FaFileDownload} />} colorScheme="green" filename={`audience_data_${dayjs().format('DD/MM/YYYY HH:mm')}`} as={CSVLink} data={csvData} isLoading={isFetchingAll} loadingText="Loading...">Download CSV</Button>
+        <ExportToExcel
+          fileName="audience_data"
+          isLoading={isFetchingAll}
+          csvData={allAudience}
+          headers={{
+            id: 'ID', nama: 'Nama', email: 'Email', no_telepon: 'Nomor Telepon', asal_instansi: 'Asal Instansi', asal_tahu_acara: 'Asal Tahu Acara', createdAt: 'Waktu Pendaftaran'
+          }}
+        />
       </Flex>
       <TableContainer mb={4}>
         <Table>
