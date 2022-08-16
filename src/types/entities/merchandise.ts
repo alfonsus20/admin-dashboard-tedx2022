@@ -7,3 +7,10 @@ export type Merchandise = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type MerchandiseDto = {
+  nama: string;
+  harga: number;
+  deskripsi_merchandise: string;
+  foto_merch?: File;
+};

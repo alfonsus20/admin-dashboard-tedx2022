@@ -15,3 +15,12 @@ export const getMerchandiseById = (
 export const deleteMerchandise = (
   id: number
 ): AxiosPromise<APIResponse<null>> => api.delete(`/merch/${id}`);
+
+export const addMerchandise = (
+  body: FormData
+): AxiosPromise<APIResponse<null>> => api.post('/merch', body);
+
+export const editMerchandise = (
+  body: FormData,
+  id: number
+): AxiosPromise<APIResponse<null>> => api.put(`/merch/${id}`, body);
