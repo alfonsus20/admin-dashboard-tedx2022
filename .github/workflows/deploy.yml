@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_BASE_URL: https://api.tedxuniversitasbrawijaya.com/admin
+      VITE_PUBLIC_URL: https://api.tedxuniversitasbrawijaya.com
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
