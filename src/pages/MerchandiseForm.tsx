@@ -67,7 +67,7 @@ const MerchandiseForm = () => {
         }
         return value.size <= 5000000;
       }),
-    link_foto_merchandise: Yup.string().required(),
+    link_foto_merchandise: Yup.string().optional(),
   }), [isEditForm]);
 
   const formik = useFormik({
