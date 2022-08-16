@@ -3,6 +3,7 @@ import {
 } from '@chakra-ui/react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { ImCross } from 'react-icons/im';
+import { MdOutlineShop, MdOutlineShopTwo } from 'react-icons/md';
 import { FaUserGraduate, FaHome, FaSignOutAlt } from 'react-icons/fa';
 import { BsFillCalendarEventFill } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,6 +12,16 @@ import { useUserContext } from '../context/UserContext';
 
 const LINKS = [
   { pathname: '/dashboard', icon: FaHome, label: 'Home' },
+  {
+    pathname: '/dashboard/merchandise',
+    icon: MdOutlineShop,
+    label: 'Merchandise',
+  },
+  {
+    pathname: '/dashboard/bundle',
+    icon: MdOutlineShopTwo,
+    label: 'Merchandise Bundle',
+  },
   {
     pathname: '/dashboard/sorak-ria',
     icon: FaUserGraduate,
@@ -21,6 +32,7 @@ const LINKS = [
     icon: BsFillCalendarEventFill,
     label: 'Pre Event',
   },
+
 ];
 
 const Sidebar = () => {
@@ -49,7 +61,7 @@ const Sidebar = () => {
         flexDir="column"
         flexShrink={0}
         rowGap={4}
-        minH="100vh"
+        h="100vh"
         pos={{ base: 'fixed', md: 'sticky' }}
         top={0}
         zIndex={20}
