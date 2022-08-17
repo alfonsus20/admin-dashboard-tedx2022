@@ -43,7 +43,7 @@ const MerchandiseForm = () => {
 
       snackbar({
         title: 'SUCCESS',
-        description: 'Merchandise was successfully added',
+        description: `Merchandise was successfully ${isEditForm ? 'edited' : 'added'}`,
         status: 'success',
       });
 
