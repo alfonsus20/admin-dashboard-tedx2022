@@ -23,16 +23,15 @@ const LINKS = [
     label: 'Merchandise Bundle',
   },
   {
-    pathname: '/dashboard/sorak-ria',
-    icon: FaUserGraduate,
-    label: 'Sorak Ria',
-  },
-  {
     pathname: '/dashboard/preevent',
     icon: BsFillCalendarEventFill,
     label: 'Pre Event',
   },
-
+  {
+    pathname: '/dashboard/sorak-ria',
+    icon: FaUserGraduate,
+    label: 'Sorak Ria',
+  },
 ];
 
 const Sidebar = () => {
@@ -128,4 +127,5 @@ const Sidebar = () => {
     </>
   );
 };
+
 export default Sidebar;
