@@ -20,7 +20,7 @@ const LINKS = [
   {
     pathname: '/dashboard/bundle',
     icon: MdOutlineShopTwo,
-    label: 'Merchandise Bundle',
+    label: 'Bundle',
   },
   {
     pathname: '/dashboard/preevent',
