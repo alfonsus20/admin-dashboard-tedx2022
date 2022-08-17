@@ -73,7 +73,7 @@ const MerchandiseForm = () => {
   const formik = useFormik({
     initialValues: {
       nama: '',
-      harga: 0,
+      harga: '',
       deskripsi_merchandise: '',
       foto_merch: undefined,
       link_foto_merchandise: ''
@@ -88,7 +88,7 @@ const MerchandiseForm = () => {
       const { data: { data } } = await getMerchandiseById(+id!);
       formik.setValues({
         nama: data.nama,
-        harga: data.harga,
+        harga: data.harga.toString(),
         deskripsi_merchandise: data.deskripsi_merchandise,
         foto_merch: undefined,
         link_foto_merchandise: data.link_foto_merchandise
