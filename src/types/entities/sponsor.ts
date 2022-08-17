@@ -6,3 +6,10 @@ export type Sponsor = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type SponsorDto = {
+  nama: string;
+  kategori_sponsor: string;
+  link_foto_sponsor: string;
+  foto_sponsor?: File;
+};

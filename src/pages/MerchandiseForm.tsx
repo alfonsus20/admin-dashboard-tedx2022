@@ -65,7 +65,7 @@ const MerchandiseForm = () => {
         if (!value) {
           return true;
         }
-        return value.size <= 5000000;
+        return value.size <= 1000000;
       }),
     link_foto_merchandise: Yup.string().optional(),
   }), [isEditForm]);
