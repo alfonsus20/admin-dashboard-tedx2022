@@ -133,7 +133,7 @@ const MerchandiseList = () => {
                 ))
             ) : merchandises.length === 0 ? (
               <Tr>
-                <Td colSpan={5} textAlign="center">
+                <Td colSpan={6} textAlign="center">
                   Data tidak tersedia
                 </Td>
               </Tr>

@@ -178,4 +178,5 @@ const MerchandiseForm = () => {
     </Box>
   );
 };
+
 export default MerchandiseForm;

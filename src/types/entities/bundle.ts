@@ -8,3 +8,12 @@ export type Bundle = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type BundleDto = {
+  nama: string;
+  harga: string;
+  deskripsi_bundle: string;
+  foto_bundle?: File;
+  link_foto_bundle: string;
+  isi_bundle: string[];
+};

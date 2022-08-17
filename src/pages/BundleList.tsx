@@ -137,7 +137,7 @@ const BundleList = () => {
                 ))
             ) : bundles.length === 0 ? (
               <Tr>
-                <Td colSpan={5} textAlign="center">
+                <Td colSpan={7} textAlign="center">
                   Data tidak tersedia
                 </Td>
               </Tr>
@@ -153,7 +153,11 @@ const BundleList = () => {
                   <Td>
                     {bundle.deskripsi_bundle}
                   </Td>
-                  <Td>{bundle.isi_bundle}</Td>
+                  <Td>
+                    <ul>
+                      {bundle.isi_bundle.split(';').map((isi, idxChild) => <li key={idxChild}>{isi}</li>)}
+                    </ul>
+                  </Td>
                   <Td>
                     <Button
                       as={Link}
