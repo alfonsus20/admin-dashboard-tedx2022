@@ -10,7 +10,8 @@ export type Merchandise = {
 
 export type MerchandiseDto = {
   nama: string;
-  harga: number;
+  harga: string;
   deskripsi_merchandise: string;
   foto_merch?: File;
+  link_foto_merchandise: string;
 };
