@@ -9,6 +9,8 @@ import MerchandiseForm from './pages/MerchandiseForm';
 import MerchandiseList from './pages/MerchandiseList';
 import NotFound from './pages/NotFound';
 import Preevent from './pages/Preevent';
+import SponsorForm from './pages/SponsorForm';
+import SponsorList from './pages/SponsorList';
 import StudentSpeaker from './pages/StudentSpeaker';
 import StudentSpeakerDetail from './pages/StudentSpeakerDetail';
 import AuthRoute from './routes/AuthRoute';
@@ -43,6 +45,8 @@ const App = () => (
             <Route path="/dashboard/bundle" element={<BundleList />} />
             <Route path="/dashboard/bundle/:id/edit" element={<BundleForm />} />
             <Route path="/dashboard/bundle/add" element={<BundleForm />} />
+            <Route path="/dashboard/sponsor" element={<SponsorList />} />
+            <Route path="/dashboard/sponsor/add" element={<SponsorForm />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

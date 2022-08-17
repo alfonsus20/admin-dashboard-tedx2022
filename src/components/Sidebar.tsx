@@ -4,7 +4,9 @@ import {
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { ImCross } from 'react-icons/im';
 import { MdOutlineShop, MdOutlineShopTwo } from 'react-icons/md';
-import { FaUserGraduate, FaHome, FaSignOutAlt } from 'react-icons/fa';
+import {
+  FaUserGraduate, FaHome, FaSignOutAlt, FaRegHandshake
+} from 'react-icons/fa';
 import { BsFillCalendarEventFill } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -21,6 +23,11 @@ const LINKS = [
     pathname: '/dashboard/bundle',
     icon: MdOutlineShopTwo,
     label: 'Bundle',
+  },
+  {
+    pathname: '/dashboard/sponsor',
+    icon: FaRegHandshake,
+    label: 'Sponsor',
   },
   {
     pathname: '/dashboard/preevent',
