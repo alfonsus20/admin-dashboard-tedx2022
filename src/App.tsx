@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserStore } from './context/UserContext';
+import BundleList from './pages/BundleList';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import MerchandiseForm from './pages/MerchandiseForm';
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/dashboard/merchandise" element={<MerchandiseList />} />
             <Route path="/dashboard/merchandise/:id/edit" element={<MerchandiseForm />} />
             <Route path="/dashboard/merchandise/add" element={<MerchandiseForm />} />
+            <Route path="/dashboard/bundle" element={<BundleList />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

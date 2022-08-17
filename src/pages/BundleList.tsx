@@ -26,17 +26,17 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import useError from '../hooks/useError';
-import { deleteMerchandise, getAllMerchandises } from '../models/merchandise';
-import { Merchandise } from '../types/entities/merchandise';
+import { deleteBundle, getAllBundles } from '../models/bundle';
+import { Bundle } from '../types/entities/bundle';
 
-const MerchandiseList = () => {
+const BundleList = () => {
   const [searchParams] = useSearchParams();
-  const [merchandises, setMerchandises] = useState<Array<Merchandise>>(
+  const [bundles, setBundles] = useState<Array<Bundle>>(
     []
   );
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [merchandiseToBeDeleted, setMerchandiseToBeDeleted] = useState<null | Merchandise>(null);
+  const [bundleToBeDeleted, setBundleToBeDeleted] = useState<null | Bundle>(null);
 
   const page = searchParams.get('page');
   const { handleError } = useError();
@@ -45,8 +45,8 @@ const MerchandiseList = () => {
   const handleFetch = async () => {
     try {
       setIsFetching(true);
-      const { data } = await getAllMerchandises();
-      setMerchandises(data.data);
+      const { data } = await getAllBundles();
+      setBundles(data.data);
     } catch (error) {
       handleError(error);
     } finally {
@@ -54,20 +54,20 @@ const MerchandiseList = () => {
     }
   };
 
-  const handleResetMerchandiseToBeDeleted = () => {
-    setMerchandiseToBeDeleted(null);
+  const handleResetBundleToBeDeleted = () => {
+    setBundleToBeDeleted(null);
   };
 
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      await deleteMerchandise(merchandiseToBeDeleted!.id);
+      await deleteBundle(bundleToBeDeleted!.id);
       snackbar({
         title: 'SUCCESS',
-        description: 'Merchandise was successfully deleted',
+        description: 'Bundle was successfully deleted',
         status: 'success',
       });
-      handleResetMerchandiseToBeDeleted();
+      handleResetBundleToBeDeleted();
       await handleFetch();
     } catch (error) {
       handleError(error);
@@ -76,8 +76,8 @@ const MerchandiseList = () => {
     }
   };
 
-  const handleShowDeleteModal = (merchandise: Merchandise) => {
-    setMerchandiseToBeDeleted(merchandise);
+  const handleShowDeleteModal = (bundle: Bundle) => {
+    setBundleToBeDeleted(bundle);
   };
 
   useEffect(() => {
@@ -87,10 +87,10 @@ const MerchandiseList = () => {
   return (
     <Box>
       <Heading fontSize="3xl" mb={12}>
-        Merchandise
+        Bundle
       </Heading>
       <Flex mb={6}>
-        <Button ml="auto" colorScheme="green" as={Link} to="/dashboard/merchandise/add" leftIcon={<Icon as={FaPlus} />}>Add Merchandise</Button>
+        <Button ml="auto" colorScheme="green" as={Link} to="/dashboard/bundle/add" leftIcon={<Icon as={FaPlus} />}>Add Bundle</Button>
       </Flex>
       <TableContainer mb={4}>
         <Table>
@@ -101,6 +101,7 @@ const MerchandiseList = () => {
               <Th>Harga</Th>
               <Th>Foto</Th>
               <Th>Deskripsi</Th>
+              <Th>Isi</Th>
               <Th>Aksi</Th>
             </Tr>
           </Thead>
@@ -129,28 +130,34 @@ const MerchandiseList = () => {
                     <Td>
                       <Skeleton height="20px" />
                     </Td>
+                    <Td>
+                      <Skeleton height="20px" />
+                    </Td>
                   </Tr>
                 ))
-            ) : merchandises.length === 0 ? (
+            ) : bundles.length === 0 ? (
               <Tr>
                 <Td colSpan={5} textAlign="center">
                   Data tidak tersedia
                 </Td>
               </Tr>
             ) : (
-              merchandises.map((merchandise, idx) => (
-                <Tr key={merchandise.id}>
+              bundles.map((bundle, idx) => (
+                <Tr key={bundle.id}>
                   <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
-                  <Td>{merchandise.nama}</Td>
-                  <Td>{merchandise.harga}</Td>
+                  <Td>{bundle.nama}</Td>
+                  <Td>{bundle.harga}</Td>
                   <Td>
-                    <Image src={merchandise.link_foto_merchandise} alt={merchandise.nama} minW={60} maxW={60} />
+                    <Image src={bundle.link_foto_bundle} alt={bundle.nama} minW={60} maxW={60} />
                   </Td>
-                  <Td>{merchandise.deskripsi_merchandise}</Td>
+                  <Td>
+                    {bundle.deskripsi_bundle}
+                  </Td>
+                  <Td>{bundle.isi_bundle}</Td>
                   <Td>
                     <Button
                       as={Link}
-                      to={`/dashboard/merchandise/${merchandise.id}/edit`}
+                      to={`/dashboard/bundle/${bundle.id}/edit`}
                       colorScheme="yellow"
                       color="white"
                       mr={3}
@@ -158,7 +165,7 @@ const MerchandiseList = () => {
                       Edit
                     </Button>
                     <Button
-                      onClick={() => handleShowDeleteModal(merchandise)}
+                      onClick={() => handleShowDeleteModal(bundle)}
                       colorScheme="red"
                     >
                       Delete
@@ -172,8 +179,8 @@ const MerchandiseList = () => {
       </TableContainer>
 
       <Modal
-        onClose={handleResetMerchandiseToBeDeleted}
-        isOpen={!!merchandiseToBeDeleted}
+        onClose={handleResetBundleToBeDeleted}
+        isOpen={!!bundleToBeDeleted}
         isCentered
       >
         <ModalOverlay />
@@ -183,13 +190,13 @@ const MerchandiseList = () => {
           <ModalBody>
             Are you sure want to delete
             {' '}
-            <strong>{merchandiseToBeDeleted?.nama}</strong>
+            <strong>{bundleToBeDeleted?.nama}</strong>
             {' '}
             ?
           </ModalBody>
           <ModalFooter>
             <Button
-              onClick={handleResetMerchandiseToBeDeleted}
+              onClick={handleResetBundleToBeDeleted}
               mr={3}
               isDisabled={isDeleting}
             >
@@ -210,4 +217,4 @@ const MerchandiseList = () => {
   );
 };
 
-export default MerchandiseList;
+export default BundleList;
