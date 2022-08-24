@@ -1,5 +1,17 @@
 import {
-  Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Icon, Image, Input, Textarea, useToast, VStack
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Icon,
+  Image,
+  Input,
+  Textarea,
+  useToast,
+  VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useMemo, useState } from 'react';
@@ -9,10 +21,14 @@ import { FaFileUpload } from 'react-icons/fa';
 import useEffectOnce from '../hooks/useEffectOnce';
 import { MerchandiseDto } from '../types/entities/merchandise';
 import useError from '../hooks/useError';
-import { addMerchandise, editMerchandise, getMerchandiseById } from '../models/merchandise';
+import {
+  addMerchandise,
+  editMerchandise,
+  getMerchandiseById,
+} from '../models/merchandise';
 
 const MerchandiseForm = () => {
-  const { id } = useParams<{ id : string }>();
+  const { id } = useParams<{ id: string }>();
 
   const isEditForm = !!id;
 
@@ -22,7 +38,7 @@ const MerchandiseForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async (data : MerchandiseDto) => {
+  const handleSubmit = async (data: MerchandiseDto) => {
     try {
       setIsSubmitting(true);
 
@@ -30,6 +46,9 @@ const MerchandiseForm = () => {
       formData.append('nama', data.nama);
       formData.append('harga', data.harga.toString());
       formData.append('deskripsi_merchandise', data.deskripsi_merchandise);
+      formData.append('deskripsi_pendek', data.deskripsi_pendek);
+      formData.append('kategori', data.kategori);
+      formData.append('warna', data.warna);
 
       if (data.foto_merch) {
         formData.append('foto_merch', data.foto_merch);
@@ -43,7 +62,9 @@ const MerchandiseForm = () => {
 
       snackbar({
         title: 'SUCCESS',
-        description: `Merchandise was successfully ${isEditForm ? 'edited' : 'added'}`,
+        description: `Merchandise was successfully ${
+          isEditForm ? 'edited' : 'added'
+        }`,
         status: 'success',
       });
 
@@ -55,20 +76,28 @@ const MerchandiseForm = () => {
     }
   };
 
-  const AddMerchandiseSchema = useMemo(() => Yup.object({
-    nama: Yup.string().required(),
-    harga: Yup.number().positive().required(),
-    deskripsi_merchandise: Yup.string().required(),
-    foto_merch: isEditForm ? Yup.mixed().nullable() : Yup.mixed()
-      .required()
-      .test('fileSize', 'Maximum file size is 1 mb', (value) => {
-        if (!value) {
-          return true;
-        }
-        return value.size <= 1000000;
-      }),
-    link_foto_merchandise: Yup.string().optional(),
-  }), [isEditForm]);
+  const AddMerchandiseSchema = useMemo(
+    () => Yup.object({
+      nama: Yup.string().required(),
+      harga: Yup.number().positive().required(),
+      deskripsi_merchandise: Yup.string().required(),
+      kategori: Yup.string().required(),
+      warna: Yup.string().required(),
+      deskripsi_pendek: Yup.string().required(),
+      foto_merch: isEditForm
+        ? Yup.mixed().nullable()
+        : Yup.mixed()
+          .required()
+          .test('fileSize', 'Maximum file size is 1 mb', (value) => {
+            if (!value) {
+              return true;
+            }
+            return value.size <= 1000000;
+          }),
+      link_foto_merchandise: Yup.string().optional(),
+    }),
+    [isEditForm]
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -76,7 +105,10 @@ const MerchandiseForm = () => {
       harga: '',
       deskripsi_merchandise: '',
       foto_merch: undefined,
-      link_foto_merchandise: ''
+      link_foto_merchandise: '',
+      deskripsi_pendek: '',
+      warna: '',
+      kategori: '',
     },
     validationSchema: AddMerchandiseSchema,
     onSubmit: handleSubmit,
@@ -85,13 +117,18 @@ const MerchandiseForm = () => {
 
   const handleFetch = async () => {
     try {
-      const { data: { data } } = await getMerchandiseById(+id!);
+      const {
+        data: { data },
+      } = await getMerchandiseById(+id!);
       formik.setValues({
         nama: data.nama,
         harga: data.harga.toString(),
         deskripsi_merchandise: data.deskripsi_merchandise,
         foto_merch: undefined,
-        link_foto_merchandise: data.link_foto_merchandise
+        link_foto_merchandise: data.link_foto_merchandise,
+        warna: data.warna,
+        kategori: data.kategori,
+        deskripsi_pendek: data.deskripsi_pendek,
       });
     } catch (error) {
       handleError(error);
@@ -131,6 +168,33 @@ const MerchandiseForm = () => {
             />
             <FormErrorMessage>{formik.errors.harga}</FormErrorMessage>
           </FormControl>
+          <FormControl isInvalid={!!formik.errors.kategori}>
+            <FormLabel htmlFor="kategori">Kategori</FormLabel>
+            <Input
+              id="kategori"
+              onChange={formik.handleChange}
+              value={formik.values.kategori}
+            />
+            <FormErrorMessage>{formik.errors.kategori}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!!formik.errors.deskripsi_pendek}>
+            <FormLabel htmlFor="deskripsi_pendek">Deskripsi Singkat</FormLabel>
+            <Input
+              id="deskripsi_pendek"
+              onChange={formik.handleChange}
+              value={formik.values.deskripsi_pendek}
+            />
+            <FormErrorMessage>{formik.errors.deskripsi_pendek}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={!!formik.errors.warna}>
+            <FormLabel htmlFor="warna">Warna</FormLabel>
+            <Input
+              id="warna"
+              onChange={formik.handleChange}
+              value={formik.values.warna}
+            />
+            <FormErrorMessage>{formik.errors.warna}</FormErrorMessage>
+          </FormControl>
           <FormControl isInvalid={!!formik.errors.deskripsi_merchandise}>
             <FormLabel htmlFor="deskripsi_merchandise">Deskripsi</FormLabel>
             <Textarea
@@ -138,12 +202,29 @@ const MerchandiseForm = () => {
               onChange={formik.handleChange}
               value={formik.values.deskripsi_merchandise}
             />
-            <FormErrorMessage>{formik.errors.deskripsi_merchandise}</FormErrorMessage>
+            <FormErrorMessage>
+              {formik.errors.deskripsi_merchandise}
+            </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!!formik.errors.foto_merch}>
             <FormLabel htmlFor="deskripsi_merchandise">Gambar</FormLabel>
-            {formik.values.foto_merch && <Image my={8} src={URL.createObjectURL(formik.values.foto_merch)} alt="merch" w={80} />}
-            {!formik.values.foto_merch && formik.values.link_foto_merchandise && <Image my={8} src={formik.values.link_foto_merchandise} alt="merch" w={80} />}
+            {formik.values.foto_merch && (
+              <Image
+                my={8}
+                src={URL.createObjectURL(formik.values.foto_merch)}
+                alt="merch"
+                w={80}
+              />
+            )}
+            {!formik.values.foto_merch
+              && formik.values.link_foto_merchandise && (
+                <Image
+                  my={8}
+                  src={formik.values.link_foto_merchandise}
+                  alt="merch"
+                  w={80}
+                />
+            )}
             <Input
               type="file"
               id="foto"
@@ -156,12 +237,17 @@ const MerchandiseForm = () => {
               }}
               name="foto_merch"
             />
-            <Button as="label" colorScheme="teal" leftIcon={<Icon as={FaFileUpload} />} htmlFor="foto">Choose Image</Button>
+            <Button
+              as="label"
+              colorScheme="teal"
+              leftIcon={<Icon as={FaFileUpload} />}
+              htmlFor="foto"
+            >
+              Choose Image
+            </Button>
             <FormErrorMessage>{formik.errors.foto_merch}</FormErrorMessage>
           </FormControl>
-          <Flex
-            w="full"
-          >
+          <Flex w="full">
             <Button
               mt={12}
               colorScheme="blue"
