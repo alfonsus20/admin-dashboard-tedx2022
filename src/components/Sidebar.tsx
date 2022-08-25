@@ -107,6 +107,7 @@ const Sidebar = () => {
         mb={8}
         mx={4}
         onClick={logout}
+        minH={10}
         leftIcon={<Icon as={FaSignOutAlt} />}
       >
         Logout

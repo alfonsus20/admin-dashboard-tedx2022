@@ -25,7 +25,7 @@ const PrivateRoute = () => {
           <Box
             pos="absolute"
             top={6}
-            left={6}
+            right={6}
             zIndex={30}
             display={{ base: 'block', md: 'none' }}
           >
