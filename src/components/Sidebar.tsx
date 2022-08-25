@@ -1,16 +1,17 @@
 import {
-  Box, Button, Flex, Heading, Icon, IconButton
+  Box, Button, Flex, Heading, Icon
 } from '@chakra-ui/react';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { ImCross } from 'react-icons/im';
 import { MdOutlineShop, MdOutlineShopTwo } from 'react-icons/md';
 import {
-  FaUserGraduate, FaHome, FaSignOutAlt, FaRegHandshake
+  FaUserGraduate,
+  FaHome,
+  FaSignOutAlt,
+  FaRegHandshake,
 } from 'react-icons/fa';
 import { BsFillCalendarEventFill } from 'react-icons/bs';
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 import { useUserContext } from '../context/UserContext';
+import { useSidebarContext } from '../context/SidebarContext';
 
 const LINKS = [
   { pathname: '/dashboard', icon: FaHome, label: 'Home' },
@@ -44,94 +45,73 @@ const LINKS = [
 const Sidebar = () => {
   const { pathname } = useLocation();
   const { logout } = useUserContext();
-  const [isOpened, setIsOpened] = useState<boolean>(false);
-
-  const toggleSidebar = () => {
-    setIsOpened((prev) => !prev);
-  };
+  const { isOpened, closeSidebar } = useSidebarContext();
 
   return (
-    <>
-      <IconButton
-        icon={<Icon as={GiHamburgerMenu} fontSize={16} m={4} />}
-        aria-label="hamburger"
-        colorScheme="red"
-        pos="absolute"
-        onClick={toggleSidebar}
-      />
-      <Flex
-        as="aside"
-        w={{ base: 'full', md: 80 }}
-        bgColor="red.500"
-        alignItems="strecth"
-        flexDir="column"
-        flexShrink={0}
-        rowGap={4}
-        h="100vh"
-        pos={{ base: 'fixed', md: 'sticky' }}
-        top={0}
-        zIndex={20}
-        left={isOpened ? '0' : '-100%'}
-        transition="0.5s ease"
+    <Flex
+      as="aside"
+      w={{ base: 'full', md: 80 }}
+      bgColor="red.500"
+      alignItems="strecth"
+      flexDir="column"
+      flexShrink={0}
+      rowGap={4}
+      className="h-screen"
+      pos={{ base: 'fixed', md: 'sticky' }}
+      top={0}
+      zIndex={20}
+      left={isOpened ? '0' : '-100%'}
+      transition="0.5s ease"
+    >
+      <Heading
+        color="white"
+        fontSize="2xl"
+        fontWeight="semibold"
+        textAlign="center"
+        pt={12}
+        pb={6}
       >
-        <IconButton
-          icon={<Icon as={ImCross} fontSize={16} m={4} color="white" />}
-          aria-label="cross"
-          bg="transparent"
-          pos="absolute"
-          onClick={toggleSidebar}
-          display={{ base: 'block', md: 'none' }}
-        />
-        <Heading
+        Admin
+        <br />
+        Dashboard
+      </Heading>
+      {LINKS.map((link, id) => (
+        <Flex
+          // eslint-disable-next-line react/no-array-index-key
+          key={id}
+          rounded="md"
           color="white"
-          fontSize="2xl"
-          fontWeight="semibold"
-          textAlign="center"
-          pt={12}
-          pb={6}
+          py={2}
+          alignItems="center"
+          fontSize="lg"
+          _hover={{ shadow: 'md' }}
+          cursor="pointer"
+          as={Link}
+          to={link.pathname}
+          role="group"
+          onClick={closeSidebar}
         >
-          Admin
-          <br />
-          Dashboard
-        </Heading>
-        {LINKS.map((link, id) => (
-          <Flex
-            // eslint-disable-next-line react/no-array-index-key
-            key={id}
-            rounded="md"
-            color="white"
-            py={2}
-            alignItems="center"
-            fontSize="lg"
-            _hover={{ shadow: 'md' }}
-            cursor="pointer"
-            as={Link}
-            to={link.pathname}
-            role="group"
-            onClick={toggleSidebar}
-          >
-            <Box
-              bgColor={link.pathname === pathname ? 'white' : 'transparent'}
-              w={1}
-              h="full"
-              mr={4}
-              _groupHover={{ bgColor: 'white' }}
-            />
-            <Icon as={link.icon} mr={6} />
-            <Box>{link.label}</Box>
-          </Flex>
-        ))}
-        <Button
-          mt="auto"
-          mb={8}
-          mx={4}
-          onClick={logout}
-          leftIcon={<Icon as={FaSignOutAlt} />}
-        >
-          Logout
-        </Button>
-      </Flex>
-    </>
+          <Box
+            bgColor={link.pathname === pathname ? 'white' : 'transparent'}
+            w={1}
+            h="full"
+            mr={4}
+            _groupHover={{ bgColor: 'white' }}
+          />
+          <Icon as={link.icon} mr={6} />
+          <Box>{link.label}</Box>
+        </Flex>
+      ))}
+      <Button
+        mt="auto"
+        mb={8}
+        mx={4}
+        onClick={logout}
+        leftIcon={<Icon as={FaSignOutAlt} />}
+      >
+        Logout
+      </Button>
+    </Flex>
   );
 };
 
