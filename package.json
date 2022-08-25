@@ -1,7 +1,7 @@
 {
   "name": "admin-dashboard",
   "private": true,
-  "version": "1.2.2",
+  "version": "1.2.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,7 @@
     "query-string": "^7.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hamburger-menu": "^1.2.1",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
     "xlsx": "^0.18.5",
@@ -31,6 +32,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@types/react-hamburger-menu": "^0.0.4",
     "@types/react-icons": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",

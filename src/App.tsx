@@ -1,5 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { SidebarStore } from './context/SidebarContext';
 import { UserStore } from './context/UserContext';
 import BundleForm from './pages/BundleForm';
 import BundleList from './pages/BundleList';
@@ -25,33 +26,47 @@ const theme = extendTheme({
 
 const App = () => (
   <ChakraProvider theme={theme}>
-    <UserStore>
-      <Router>
-        <Routes>
-          <Route element={<AuthRoute />}>
-            <Route path="/" element={<Login />} />
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Home />} />
-            <Route path="/dashboard/sorak-ria" element={<StudentSpeaker />} />
-            <Route
-              path="/dashboard/sorak-ria/:id"
-              element={<StudentSpeakerDetail />}
-            />
-            <Route path="/dashboard/preevent" element={<Preevent />} />
-            <Route path="/dashboard/merchandise" element={<MerchandiseList />} />
-            <Route path="/dashboard/merchandise/:id/edit" element={<MerchandiseForm />} />
-            <Route path="/dashboard/merchandise/add" element={<MerchandiseForm />} />
-            <Route path="/dashboard/bundle" element={<BundleList />} />
-            <Route path="/dashboard/bundle/:id/edit" element={<BundleForm />} />
-            <Route path="/dashboard/bundle/add" element={<BundleForm />} />
-            <Route path="/dashboard/sponsor" element={<SponsorList />} />
-            <Route path="/dashboard/sponsor/add" element={<SponsorForm />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Router>
-    </UserStore>
+    <SidebarStore>
+      <UserStore>
+        <Router>
+          <Routes>
+            <Route element={<AuthRoute />}>
+              <Route path="/" element={<Login />} />
+            </Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/dashboard" element={<Home />} />
+              <Route path="/dashboard/sorak-ria" element={<StudentSpeaker />} />
+              <Route
+                path="/dashboard/sorak-ria/:id"
+                element={<StudentSpeakerDetail />}
+              />
+              <Route path="/dashboard/preevent" element={<Preevent />} />
+              <Route
+                path="/dashboard/merchandise"
+                element={<MerchandiseList />}
+              />
+              <Route
+                path="/dashboard/merchandise/:id/edit"
+                element={<MerchandiseForm />}
+              />
+              <Route
+                path="/dashboard/merchandise/add"
+                element={<MerchandiseForm />}
+              />
+              <Route path="/dashboard/bundle" element={<BundleList />} />
+              <Route
+                path="/dashboard/bundle/:id/edit"
+                element={<BundleForm />}
+              />
+              <Route path="/dashboard/bundle/add" element={<BundleForm />} />
+              <Route path="/dashboard/sponsor" element={<SponsorList />} />
+              <Route path="/dashboard/sponsor/add" element={<SponsorForm />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Router>
+      </UserStore>
+    </SidebarStore>
   </ChakraProvider>
 );
 
