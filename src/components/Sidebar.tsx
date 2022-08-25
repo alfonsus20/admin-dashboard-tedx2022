@@ -1,5 +1,5 @@
 import {
-  Box, Button, Flex, Heading, Icon
+  Box, Button, Flex, Heading, Icon, VStack
 } from '@chakra-ui/react';
 import { MdOutlineShop, MdOutlineShopTwo } from 'react-icons/md';
 import {
@@ -69,39 +69,40 @@ const Sidebar = () => {
         fontWeight="semibold"
         textAlign="center"
         pt={12}
-        pb={6}
       >
         Admin
         <br />
         Dashboard
       </Heading>
-      {LINKS.map((link, id) => (
-        <Flex
-          // eslint-disable-next-line react/no-array-index-key
-          key={id}
-          rounded="md"
-          color="white"
-          py={2}
-          alignItems="center"
-          fontSize="lg"
-          _hover={{ shadow: 'md' }}
-          cursor="pointer"
-          as={Link}
-          to={link.pathname}
-          role="group"
-          onClick={closeSidebar}
-        >
-          <Box
-            bgColor={link.pathname === pathname ? 'white' : 'transparent'}
-            w={1}
-            h="full"
-            mr={4}
-            _groupHover={{ bgColor: 'white' }}
-          />
-          <Icon as={link.icon} mr={6} />
-          <Box>{link.label}</Box>
-        </Flex>
-      ))}
+      <VStack my={6} alignItems="stretch">
+        {LINKS.map((link, id) => (
+          <Flex
+            // eslint-disable-next-line react/no-array-index-key
+            key={id}
+            rounded="md"
+            color="white"
+            py={2}
+            alignItems="center"
+            fontSize="lg"
+            _hover={{ shadow: 'md' }}
+            cursor="pointer"
+            as={Link}
+            to={link.pathname}
+            role="group"
+            onClick={closeSidebar}
+          >
+            <Box
+              bgColor={link.pathname === pathname ? 'white' : 'transparent'}
+              w={1}
+              h="full"
+              mr={4}
+              _groupHover={{ bgColor: 'white' }}
+            />
+            <Icon as={link.icon} mr={6} />
+            <Box>{link.label}</Box>
+          </Flex>
+        ))}
+      </VStack>
       <Button
         mt="auto"
         mb={8}
