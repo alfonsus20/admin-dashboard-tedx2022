@@ -6,6 +6,7 @@ import BundleForm from './pages/BundleForm';
 import BundleList from './pages/BundleList';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import MainEvent from './pages/MainEvent';
 import MerchandiseForm from './pages/MerchandiseForm';
 import MerchandiseList from './pages/MerchandiseList';
 import NotFound from './pages/NotFound';
@@ -35,6 +36,7 @@ const App = () => (
             </Route>
             <Route element={<PrivateRoute />}>
               <Route path="/dashboard" element={<Home />} />
+              <Route path="/dashboard/main-event" element={<MainEvent />} />
               <Route path="/dashboard/sorak-ria" element={<StudentSpeaker />} />
               <Route
                 path="/dashboard/sorak-ria/:id"
