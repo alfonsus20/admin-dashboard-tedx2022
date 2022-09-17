@@ -206,7 +206,7 @@ const MainEvent = () => {
       </Flex>
       <Flex>
         <Flex ml="auto" gap={2}>
-          <Input placeholder="Search by Name" />
+          <Input placeholder="Search Name or ID" />
           <IconButton
             colorScheme="blue"
             aria-label="search"
