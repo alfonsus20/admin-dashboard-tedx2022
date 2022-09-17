@@ -20,11 +20,15 @@ import {
   ModalFooter,
   Flex,
   Input,
+  Badge,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { QrReader } from 'react-qr-reader';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
 import useEffectOnce from '../hooks/useEffectOnce';
 import useError from '../hooks/useError';
@@ -123,12 +127,12 @@ const MainEvent = () => {
         Main Event Attendance
       </Heading>
       <Flex gap={8} mb={12} alignItems="center">
-        <Box w="45%" pos="relative">
+        <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch">
           <QrReader
             constraints={{ facingMode: 'user' }}
             containerStyle={{
               width: '100%',
-              aspectRatio: '16/9',
+              flexGrow: 1,
             }}
             videoContainerStyle={{ height: '100%', padding: 0 }}
             videoStyle={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -141,11 +145,15 @@ const MainEvent = () => {
               }
             }}
           />
-          <Flex gap={5} w="full" mt={6}>
-            <Input placeholder="Input QR Manually" flex="1 1 auto" />
-            <Button colorScheme="red">Submit</Button>
+          <Flex gap={2} w="full" mt={4}>
+            <Input placeholder="Input Code Manually" flex="1 1 auto" />
+            <IconButton
+              colorScheme="blue"
+              aria-label="search"
+              icon={<Icon as={FaSearch} />}
+            />
           </Flex>
-        </Box>
+        </Flex>
         <Box w="55%">
           <TableContainer mb={4} whiteSpace="pre-wrap">
             <Table>
@@ -158,7 +166,7 @@ const MainEvent = () => {
               <Tbody>
                 <Tr>
                   <Td>Kode</Td>
-                  <Td>QIEWQASD123mkasd</Td>
+                  <Td>{qrData}</Td>
                 </Tr>
                 <Tr>
                   <Td>Nama</Td>
@@ -176,10 +184,35 @@ const MainEvent = () => {
                   <Td>No. Telepon</Td>
                   <Td>0812312312123</Td>
                 </Tr>
+                <Tr>
+                  <Td>Status</Td>
+                  <Td>
+                    <Badge colorScheme="green" variant="solid">
+                      Checked in
+                    </Badge>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td colSpan={2}>
+                    <Button colorScheme="blue" w="full">
+                      Check In
+                    </Button>
+                  </Td>
+                </Tr>
               </Tbody>
             </Table>
           </TableContainer>
         </Box>
+      </Flex>
+      <Flex>
+        <Flex ml="auto" gap={2}>
+          <Input placeholder="Search by Name" />
+          <IconButton
+            colorScheme="blue"
+            aria-label="search"
+            icon={<Icon as={FaSearch} />}
+          />
+        </Flex>
       </Flex>
       <TableContainer mb={4}>
         <Table colorScheme="red" variant="striped">
