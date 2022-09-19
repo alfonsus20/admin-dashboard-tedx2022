@@ -11,13 +11,6 @@ import {
   Button,
   Skeleton,
   useToast,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Flex,
   Input,
   Badge,
@@ -27,29 +20,26 @@ import {
   GridItem,
   Text,
 } from '@chakra-ui/react';
-import dayjs from 'dayjs';
 import { QrReader } from 'react-qr-reader';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
-import useEffectOnce from '../hooks/useEffectOnce';
 import useError from '../hooks/useError';
 import {
-  getAudienceList,
-  deleteAudience,
-  getAllAudience,
-} from '../models/preevent';
-import { Audience } from '../types/entities/preevent';
+  getVisitorById,
+  getVisitorList,
+  verifyVisitor,
+} from '../models/mainEvent';
+import { Visitor } from '../types/entities/visitor';
 
 const MainEvent = () => {
   const [searchParams] = useSearchParams();
-  const [audienceList, setAudienceList] = useState<Array<Audience>>([]);
-  const [allAudience, setAllAudience] = useState<Array<Audience>>([]);
+  const [audienceList, setVisitorList] = useState<Array<Visitor>>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [isFetchingAll, setIsFetchingAll] = useState<boolean>(false);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [audienceToBeDeleted, setAudienceToBeDeleted] = useState<null | Audience>(null);
+  const [isVerifying, setIsVerifying] = useState<boolean>(false);
+  const [isLoadingVisitorInfo, setIsLoadingVisitorInfo] = useState<boolean>(false);
+  const [visitorToBeVerified, setVisitorToBeVerified] = useState<null | Visitor>(null);
   const [totalData, setTotalData] = useState<number>(0);
   const [qrData, setQRData] = useState<string>('');
 
@@ -60,8 +50,8 @@ const MainEvent = () => {
   const handleFetch = async () => {
     try {
       setIsFetching(true);
-      const { data } = await getAudienceList({ page: page ? +page : 1 });
-      setAudienceList(data.data.rows);
+      const { data } = await getVisitorList({ page: page ? +page : 1 });
+      setVisitorList(data.data.rows);
       setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
@@ -70,49 +60,39 @@ const MainEvent = () => {
     }
   };
 
-  const handleFetchAll = async () => {
+  const handleFetchVisitorInfo = async () => {
     try {
-      setIsFetchingAll(true);
-      const { data } = await getAllAudience();
-      console.log(data.data);
-      setAllAudience(data.data);
+      setIsLoadingVisitorInfo(true);
+      const { data } = await getVisitorById(qrData);
+      setVisitorToBeVerified(data.data);
     } catch (error) {
       handleError(error);
     } finally {
-      setIsFetchingAll(false);
+      setIsLoadingVisitorInfo(false);
     }
   };
 
-  const handleResetAudienceToBeDeleted = () => {
-    setAudienceToBeDeleted(null);
-  };
-
-  const handleDelete = async () => {
+  const handleVerify = async (id: string) => {
     try {
-      setIsDeleting(true);
-      await deleteAudience(audienceToBeDeleted!.id);
+      setIsVerifying(true);
+      await verifyVisitor(id);
       snackbar({
         title: 'SUCCESS',
-        description: 'Audience was successfully deleted',
+        description: 'Visitor was successfully checked in',
         status: 'success',
       });
-      handleResetAudienceToBeDeleted();
+      await handleFetchVisitorInfo();
       await handleFetch();
     } catch (error) {
       handleError(error);
     } finally {
-      setIsDeleting(false);
+      setIsVerifying(false);
     }
-  };
-
-  const postDataQR = () => {
-    console.log('CALL API');
-    snackbar({ status: 'success', title: 'SUCCESS' });
   };
 
   useEffect(() => {
     if (qrData) {
-      postDataQR();
+      handleFetchVisitorInfo();
     }
   }, [qrData]);
 
@@ -120,17 +100,19 @@ const MainEvent = () => {
     handleFetch();
   }, [page]);
 
-  useEffectOnce(() => {
-    handleFetchAll();
-  });
-
   return (
     <Box>
       <Heading fontSize="3xl" mb={12}>
         Main Event Attendance
       </Heading>
       <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
-        <GridItem borderColor="green.500" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+        <GridItem
+          borderColor="green.500"
+          borderTopWidth={3.5}
+          p={3}
+          boxShadow="lg"
+          borderRadius="lg"
+        >
           <Heading fontSize="xl" color="green.500">
             Early Bird
           </Heading>
@@ -138,7 +120,13 @@ const MainEvent = () => {
             30
           </Text>
         </GridItem>
-        <GridItem borderColor="orange.400" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+        <GridItem
+          borderColor="orange.400"
+          borderTopWidth={3.5}
+          p={3}
+          boxShadow="lg"
+          borderRadius="lg"
+        >
           <Heading fontSize="xl" color="orange.400">
             Presale 1
           </Heading>
@@ -146,7 +134,13 @@ const MainEvent = () => {
             30
           </Text>
         </GridItem>
-        <GridItem borderColor="blue.400" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+        <GridItem
+          borderColor="blue.400"
+          borderTopWidth={3.5}
+          p={3}
+          boxShadow="lg"
+          borderRadius="lg"
+        >
           <Heading fontSize="xl" color="blue.400">
             Presale 2
           </Heading>
@@ -167,7 +161,7 @@ const MainEvent = () => {
             videoStyle={{ width: '100%', height: '100%', objectFit: 'cover' }}
             onResult={(result, error) => {
               if (result) {
-                setQRData(result?.getText());
+                setQRData(result.getText());
               }
               if (error) {
                 console.info(error);
@@ -187,37 +181,88 @@ const MainEvent = () => {
               <Tbody>
                 <Tr>
                   <Td>Kode</Td>
-                  <Td>{qrData}</Td>
+                  <Td>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified?.id
+                    )}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>Nama</Td>
-                  <Td>Alfonsus Avianto Chandrawan</Td>
+                  <Td>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified?.nama
+                    )}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>Email</Td>
-                  <Td>alfons@gmail.com</Td>
+                  <Td>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified?.email
+                    )}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>Asal Instansi</Td>
-                  <Td>Filkom</Td>
+                  <Td>
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : visitorToBeVerified ? (
+                      `${visitorToBeVerified?.asalInstansi} - ${visitorToBeVerified?.namaInstansi}`
+                    ) : (
+                      ''
+                    )}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>No. Telepon</Td>
-                  <Td>0812312312123</Td>
+                  <Td>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified?.nomorTelp
+                    )}
+                  </Td>
                 </Tr>
                 <Tr>
                   <Td>Status</Td>
                   <Td>
-                    <Badge colorScheme="green" variant="solid">
-                      Checked in
-                    </Badge>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified
+                      && (visitorToBeVerified.is_scanned ? (
+                        <Badge colorScheme="green" variant="solid">
+                          Checked in
+                        </Badge>
+                      ) : (
+                        <Badge colorScheme="red" variant="solid">
+                          Not Checked in
+                        </Badge>
+                      ))
+                    )}
                   </Td>
                 </Tr>
                 <Tr>
                   <Td colSpan={2}>
-                    <Button colorScheme="green" w="full">
-                      Check In
-                    </Button>
+                    {visitorToBeVerified && !visitorToBeVerified.is_scanned && (
+                      <Button
+                        colorScheme="green"
+                        w="full"
+                        onClick={() => handleVerify(qrData)}
+                        isLoading={isVerifying}
+                      >
+                        Check In
+                      </Button>
+                    )}
                   </Td>
                 </Tr>
               </Tbody>
@@ -244,8 +289,8 @@ const MainEvent = () => {
               <Th>Asal Instansi</Th>
               <Th>No Telepon</Th>
               <Th>Email</Th>
-              <Th>Asal Tahu Acara</Th>
-              <Th>Tanggal Daftar</Th>
+              <Th>Status</Th>
+              <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -289,21 +334,30 @@ const MainEvent = () => {
                 <Tr key={audience.id}>
                   <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
                   <Td>{audience.nama}</Td>
-                  <Td>{audience.asal_instansi}</Td>
-                  <Td>{audience.no_telepon}</Td>
+                  <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
+                  <Td>{audience.nomorTelp}</Td>
                   <Td>{audience.email}</Td>
                   <Td>
-                    <ul>
-                      {audience.asal_tahu_acara
-                        .split(',')
-                        .filter((item) => item)
-                        .map((item, idxInner) => (
-                          <li key={idxInner}>{item}</li>
-                        ))}
-                    </ul>
+                    {audience.is_scanned ? (
+                      <Badge colorScheme="green" variant="solid">
+                        Checked in
+                      </Badge>
+                    ) : (
+                      <Badge colorScheme="red" variant="solid">
+                        Not Checked in
+                      </Badge>
+                    )}
                   </Td>
                   <Td>
-                    {dayjs(audience.createdAt).format('DD/MM/YYYY HH:mm')}
+                    {!audience.is_scanned && (
+                      <Button
+                        colorScheme="green"
+                        isLoading={isVerifying}
+                        onClick={() => handleVerify(audience.id)}
+                      >
+                        Check In
+                      </Button>
+                    )}
                   </Td>
                 </Tr>
               ))
@@ -312,42 +366,6 @@ const MainEvent = () => {
         </Table>
       </TableContainer>
       <Pagination totalData={totalData} rowsPerPage={10} />
-
-      <Modal
-        onClose={handleResetAudienceToBeDeleted}
-        isOpen={!!audienceToBeDeleted}
-        isCentered
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Delete Confirmation</ModalHeader>
-          <ModalCloseButton isDisabled={isDeleting} />
-          <ModalBody>
-            Are you sure want to delete
-            {' '}
-            <strong>{audienceToBeDeleted?.nama}</strong>
-            {' '}
-            ?
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              onClick={handleResetAudienceToBeDeleted}
-              mr={3}
-              isDisabled={isDeleting}
-            >
-              Cancel
-            </Button>
-            <Button
-              colorScheme="red"
-              onClick={handleDelete}
-              isLoading={isDeleting}
-              loadingText="Loading..."
-            >
-              Delete
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Box>
   );
 };
