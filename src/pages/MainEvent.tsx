@@ -23,6 +23,9 @@ import {
   Badge,
   IconButton,
   Icon,
+  Grid,
+  GridItem,
+  Text,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { QrReader } from 'react-qr-reader';
@@ -126,6 +129,32 @@ const MainEvent = () => {
       <Heading fontSize="3xl" mb={12}>
         Main Event Attendance
       </Heading>
+      <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
+        <GridItem borderColor="green.500" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+          <Heading fontSize="xl" color="green.500">
+            Early Bird
+          </Heading>
+          <Text fontSize="4xl" fontWeight="medium">
+            30
+          </Text>
+        </GridItem>
+        <GridItem borderColor="orange.400" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+          <Heading fontSize="xl" color="orange.400">
+            Presale 1
+          </Heading>
+          <Text fontSize="4xl" fontWeight="medium">
+            30
+          </Text>
+        </GridItem>
+        <GridItem borderColor="blue.400" borderTopWidth={3.5} p={3} boxShadow="lg" borderRadius="lg">
+          <Heading fontSize="xl" color="blue.400">
+            Presale 2
+          </Heading>
+          <Text fontSize="4xl" fontWeight="medium">
+            30
+          </Text>
+        </GridItem>
+      </Grid>
       <Flex gap={8} mb={12} alignItems="center">
         <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch">
           <QrReader
@@ -145,14 +174,6 @@ const MainEvent = () => {
               }
             }}
           />
-          <Flex gap={2} w="full" mt={4}>
-            <Input placeholder="Input Code Manually" flex="1 1 auto" />
-            <IconButton
-              colorScheme="blue"
-              aria-label="search"
-              icon={<Icon as={FaSearch} />}
-            />
-          </Flex>
         </Flex>
         <Box w="55%">
           <TableContainer mb={4} whiteSpace="pre-wrap">
@@ -194,7 +215,7 @@ const MainEvent = () => {
                 </Tr>
                 <Tr>
                   <Td colSpan={2}>
-                    <Button colorScheme="blue" w="full">
+                    <Button colorScheme="green" w="full">
                       Check In
                     </Button>
                   </Td>
@@ -208,7 +229,7 @@ const MainEvent = () => {
         <Flex ml="auto" gap={2}>
           <Input placeholder="Search Name or ID" />
           <IconButton
-            colorScheme="blue"
+            colorScheme="red"
             aria-label="search"
             icon={<Icon as={FaSearch} />}
           />
