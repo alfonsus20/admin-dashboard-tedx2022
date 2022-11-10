@@ -1,7 +1,11 @@
 import {
   Box, Button, Flex, Heading, Icon, VStack
 } from '@chakra-ui/react';
-import { MdOutlineShop, MdOutlineShopTwo } from 'react-icons/md';
+import {
+  MdOutlineDomainVerification,
+  MdOutlineShop,
+  MdOutlineShopTwo,
+} from 'react-icons/md';
 import {
   FaUserGraduate,
   FaHome,
@@ -15,6 +19,11 @@ import { useSidebarContext } from '../context/SidebarContext';
 
 const LINKS = [
   { pathname: '/dashboard', icon: FaHome, label: 'Home' },
+  {
+    pathname: '/dashboard/main-event',
+    icon: MdOutlineDomainVerification,
+    label: 'Main Event',
+  },
   {
     pathname: '/dashboard/merchandise',
     icon: MdOutlineShop,
@@ -50,7 +59,7 @@ const Sidebar = () => {
   return (
     <Flex
       as="aside"
-      w={{ base: 'full', md: 80 }}
+      w={{ base: 'full', md: 60, lg: 80 }}
       bgColor="red.500"
       alignItems="strecth"
       flexDir="column"

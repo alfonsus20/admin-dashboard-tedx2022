@@ -7,8 +7,8 @@ jobs:
     name: 🎉 Deploy Production
     runs-on: ubuntu-latest
     env:
-      VITE_BASE_URL: https://api.tedxuniversitasbrawijaya.com/admin
-      VITE_PUBLIC_URL: https://api.tedxuniversitasbrawijaya.com
+      VITE_BASE_URL: https://tedxubproduction.my.id/admin
+      VITE_PUBLIC_URL: https://tedxubproduction.my.id
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
