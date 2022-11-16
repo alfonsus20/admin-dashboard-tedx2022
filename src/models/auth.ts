@@ -5,4 +5,4 @@ import api from '../utils/api';
 
 export const loginAdmin = (
   data: LoginDto
-): AxiosPromise<APIResponse<LoginResponse>> => api.post('/login', data);
+): AxiosPromise<APIResponse<LoginResponse>> => api.post('/admin/login', data);

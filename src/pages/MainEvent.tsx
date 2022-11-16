@@ -27,15 +27,19 @@ import { FaSearch } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
 import useError from '../hooks/useError';
 import {
+  getAllTicket,
+  getAllVisitor,
   getVisitorById,
   getVisitorList,
   verifyVisitor,
 } from '../models/mainEvent';
 import { Visitor } from '../types/entities/visitor';
+import { Ticket } from '../types/entities/ticket';
 
 const MainEvent = () => {
   const [searchParams] = useSearchParams();
   const [audienceList, setVisitorList] = useState<Array<Visitor>>([]);
+  const [ticketList, setTicketList] = useState<Array<Ticket>>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [isLoadingVisitorInfo, setIsLoadingVisitorInfo] = useState<boolean>(false);
@@ -49,10 +53,29 @@ const MainEvent = () => {
 
   const handleFetch = async () => {
     try {
+      let tempVisitorList = [];
       setIsFetching(true);
-      const { data } = await getVisitorList({ page: page ? +page : 1 });
-      setVisitorList(data.data.rows);
-      setTotalData(data.data.count);
+      const { data } = await getAllVisitor();
+      for (let item of data.data) {
+        if (item.qr_code){
+          tempVisitorList.push(item);
+        }
+      }
+      setVisitorList(tempVisitorList);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const handleFetchTicket = async () => {
+    try {
+      setIsFetching(true);
+      const { data } = await getAllTicket();
+      console.log(data)
+      setTicketList(data.data);
+      // setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
     } finally {
@@ -98,6 +121,7 @@ const MainEvent = () => {
 
   useEffect(() => {
     handleFetch();
+    handleFetchTicket();
   }, [page]);
 
   return (
@@ -117,7 +141,7 @@ const MainEvent = () => {
             Early Bird
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            30
+            {ticketList[0]?.remaining_ticket}
           </Text>
         </GridItem>
         <GridItem
@@ -131,7 +155,7 @@ const MainEvent = () => {
             Presale 1
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            30
+            {ticketList[1]?.remaining_ticket}
           </Text>
         </GridItem>
         <GridItem
@@ -145,7 +169,7 @@ const MainEvent = () => {
             Presale 2
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            30
+            {ticketList[2]?.remaining_ticket}
           </Text>
         </GridItem>
       </Grid>
@@ -323,14 +347,14 @@ const MainEvent = () => {
                     </Td>
                   </Tr>
                 ))
-            ) : audienceList.length === 0 ? (
+            ) : audienceList?.length === 0 ? (
               <Tr>
                 <Td colSpan={8} textAlign="center">
                   Data tidak tersedia
                 </Td>
               </Tr>
             ) : (
-              audienceList.map((audience, idx) => (
+              audienceList?.map((audience, idx) => (
                 <Tr key={audience.id}>
                   <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
                   <Td>{audience.nama}</Td>
