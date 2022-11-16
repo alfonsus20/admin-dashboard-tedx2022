@@ -19,6 +19,7 @@ import {
   Grid,
   GridItem,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
 import { QrReader } from 'react-qr-reader';
 import { useEffect, useState } from 'react';
@@ -129,6 +130,9 @@ const MainEvent = () => {
       <Heading fontSize="3xl" mb={12}>
         Main Event Attendance
       </Heading>
+      <Flex justifyContent='start' alignItems='center' mb={3}>
+          <Heading as='h4' size='md'>Remaining Ticket:</Heading>
+        </Flex>
       <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
         <GridItem
           borderColor="green.500"
@@ -295,6 +299,10 @@ const MainEvent = () => {
         </Box>
       </Flex>
       <Flex>
+        <Flex justifyContent='center' alignItems='center'>
+          <Heading as='h4' size='md'>Total Buyer: {audienceList.length}</Heading>
+        </Flex>
+        <Spacer />
         <Flex ml="auto" gap={2}>
           <Input placeholder="Search Name or ID" />
           <IconButton
