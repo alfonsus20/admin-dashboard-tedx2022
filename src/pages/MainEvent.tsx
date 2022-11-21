@@ -170,7 +170,7 @@ const MainEvent = () => {
           borderRadius="lg"
         >
           <Heading fontSize="xl" color="blue.400">
-            Presale 2
+            Special Ticket
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
             {ticketList[2]?.remaining_ticket}
