@@ -369,7 +369,7 @@ const MainEvent = () => {
               </Tr>
             ) : (
               audienceList?.map((audience, idx) => {
-                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase())){
+                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase()) || audience.asalInstansi.toLowerCase().includes(search.toLowerCase())  || audience.namaInstansi.toLowerCase().includes(search.toLowerCase())){
                   return (
                     <Tr key={audience.id}>
                       <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
