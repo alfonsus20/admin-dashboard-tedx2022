@@ -131,7 +131,7 @@ const MainEvent = () => {
         Main Event Attendance
       </Heading>
       <Flex justifyContent='start' alignItems='center' mb={3}>
-          <Heading as='h4' size='md'>Remaining Ticket:</Heading>
+          <Heading as='h4' size='md'>Ticket Sold:</Heading>
         </Flex>
       <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
         <GridItem
@@ -145,7 +145,7 @@ const MainEvent = () => {
             Early Bird
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            {ticketList[0]?.remaining_ticket}
+            {ticketList[0]?.ticket_sold}
           </Text>
         </GridItem>
         <GridItem
@@ -159,7 +159,7 @@ const MainEvent = () => {
             Presale 1
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            {ticketList[1]?.remaining_ticket}
+            {ticketList[1]?.ticket_sold}
           </Text>
         </GridItem>
         <GridItem
@@ -173,7 +173,7 @@ const MainEvent = () => {
             Special Ticket
           </Heading>
           <Text fontSize="4xl" fontWeight="medium">
-            {ticketList[2]?.remaining_ticket}
+            {ticketList[2]?.ticket_sold}
           </Text>
         </GridItem>
       </Grid>
@@ -300,7 +300,7 @@ const MainEvent = () => {
       </Flex>
       <Flex>
         <Flex justifyContent='center' alignItems='center'>
-          <Heading as='h4' size='md'>Total Buyer: {audienceList.length}</Heading>
+          <Heading as='h4' size='md'>Total Audiens/Ticket Sold: {audienceList.length}</Heading>
         </Flex>
         <Spacer />
         <Flex ml="auto" gap={2}>
