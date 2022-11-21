@@ -47,6 +47,7 @@ const MainEvent = () => {
   const [visitorToBeVerified, setVisitorToBeVerified] = useState<null | Visitor>(null);
   const [totalData, setTotalData] = useState<number>(0);
   const [qrData, setQRData] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   const page = searchParams.get('page');
   const { handleError } = useError();
@@ -74,9 +75,7 @@ const MainEvent = () => {
     try {
       setIsFetching(true);
       const { data } = await getAllTicket();
-      console.log(data)
       setTicketList(data.data);
-      // setTotalData(data.data.count);
     } catch (error) {
       handleError(error);
     } finally {
@@ -112,6 +111,10 @@ const MainEvent = () => {
     } finally {
       setIsVerifying(false);
     }
+  };
+
+  const handleChange = (e: { target: { value: string; }; }) => {
+    setSearch(e.target.value);
   };
 
   useEffect(() => {
@@ -304,7 +307,10 @@ const MainEvent = () => {
         </Flex>
         <Spacer />
         <Flex ml="auto" gap={2}>
-          <Input placeholder="Search Name or ID" />
+          <Input 
+            placeholder="Search Name or ID"
+            value={search}
+            onChange={handleChange} />
           <IconButton
             colorScheme="red"
             aria-label="search"
@@ -362,37 +368,42 @@ const MainEvent = () => {
                 </Td>
               </Tr>
             ) : (
-              audienceList?.map((audience, idx) => (
-                <Tr key={audience.id}>
-                  <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
-                  <Td>{audience.nama}</Td>
-                  <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
-                  <Td>{audience.nomorTelp}</Td>
-                  <Td>{audience.email}</Td>
-                  <Td>
-                    {audience.is_scanned ? (
-                      <Badge colorScheme="green" variant="solid">
-                        Checked in
-                      </Badge>
-                    ) : (
-                      <Badge colorScheme="red" variant="solid">
-                        Not Checked in
-                      </Badge>
-                    )}
-                  </Td>
-                  <Td>
-                    {!audience.is_scanned && (
-                      <Button
-                        colorScheme="green"
-                        isLoading={isVerifying}
-                        onClick={() => handleVerify(audience.id)}
-                      >
-                        Check In
-                      </Button>
-                    )}
-                  </Td>
-                </Tr>
-              ))
+              audienceList?.map((audience, idx) => {
+                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase())){
+                  return (
+                    <Tr key={audience.id}>
+                      <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
+                      <Td>{audience.nama}</Td>
+                      <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
+                      <Td>{audience.nomorTelp}</Td>
+                      <Td>{audience.email}</Td>
+                      <Td>
+                        {audience.is_scanned ? (
+                          <Badge colorScheme="green" variant="solid">
+                            Checked in
+                          </Badge>
+                        ) : (
+                          <Badge colorScheme="red" variant="solid">
+                            Not Checked in
+                          </Badge>
+                        )}
+                      </Td>
+                      <Td>
+                        {!audience.is_scanned && (
+                          <Button
+                            colorScheme="green"
+                            isLoading={isVerifying}
+                            onClick={() => handleVerify(audience.id)}
+                          >
+                            Check In
+                          </Button>
+                        )}
+                      </Td>
+                    </Tr>
+                  );
+                }
+                return null;
+              })
             )}
           </Tbody>
         </Table>
