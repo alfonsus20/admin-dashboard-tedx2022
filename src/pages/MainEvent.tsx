@@ -141,60 +141,70 @@ const MainEvent = () => {
 
   return (
     <Box>
-      <Heading fontSize="3xl" mb={12}>
+      <Heading fontSize="3xl" mb={{ base: 6, lg: 12}}>
         Main Event Attendance
       </Heading>
       <Flex justifyContent='start' alignItems='center' mb={3}>
           <Heading as='h4' size='md'>Ticket Sold:</Heading>
         </Flex>
       <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
-        <GridItem
+        <Flex
+          flexDir="column"
+          justifyContent="space-evenly"
+          alignItems="center"
           borderColor="green.500"
           borderTopWidth={3.5}
-          p={3}
+          p={1}
           boxShadow="lg"
           borderRadius="lg"
         >
-          <Heading fontSize="xl" color="green.500">
+          <Heading fontSize={{ base: "md", lg: "xl"}} color="green.500">
             Early Bird
           </Heading>
-          <Text fontSize="4xl" fontWeight="medium">
+          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
             {ticketList[0]?.ticket_sold}
           </Text>
-        </GridItem>
-        <GridItem
+        </Flex>
+        <Flex
+          flexDir="column"
+          justifyContent="space-evenly"
+          alignItems="center"
           borderColor="orange.400"
           borderTopWidth={3.5}
-          p={3}
+          p={1}
           boxShadow="lg"
           borderRadius="lg"
+          gridAutoColumns="max-content"
         >
-          <Heading fontSize="xl" color="orange.400">
+          <Heading fontSize={{ base: "md", lg: "xl"}} color="orange.400">
             Presale 1
           </Heading>
-          <Text fontSize="4xl" fontWeight="medium">
+          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
             {ticketList[1]?.ticket_sold}
           </Text>
-        </GridItem>
-        <GridItem
+        </Flex>
+        <Flex
+          flexDir="column"
+          justifyContent="space-evenly"
+          alignItems="center"
           borderColor="blue.400"
           borderTopWidth={3.5}
-          p={3}
+          p={1}
           boxShadow="lg"
           borderRadius="lg"
         >
-          <Heading fontSize="xl" color="blue.400">
+          <Heading fontSize={{ base: "md", lg: "xl"}} color="blue.400">
             Special Ticket
           </Heading>
-          <Text fontSize="4xl" fontWeight="medium">
+          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
             {ticketList[2]?.ticket_sold}
           </Text>
-        </GridItem>
+        </Flex>
       </Grid>
-      <Flex gap={8} mb={12} alignItems="center">
-        <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch" gap={3}>
+      <Flex flexDir={{ base:"column", lg: "row"}} gap={8} mb={6} alignItems="center">
+        <Flex flexDir="column" h={{ base:"300px", lg:"auto"}}  w={{ base:"100%", lg: "45%"}} pos="relative" alignSelf="stretch" gap={3}>
           <QrReader
-            constraints={{ facingMode: { exact: `${cameraEnvironment}` } }}
+            constraints={{ facingMode: `${cameraEnvironment}` }}
             containerStyle={{
               width: '100%',
               flexGrow: 1,
@@ -214,7 +224,7 @@ const MainEvent = () => {
             Switch Camera
           </Button>
         </Flex>
-        <Box w="55%">
+        <Box w={{ base: "100%", lg: "55%"}}>
           <TableContainer mb={4} whiteSpace="pre-wrap">
             <Table>
               <Thead>
@@ -315,12 +325,12 @@ const MainEvent = () => {
           </TableContainer>
         </Box>
       </Flex>
-      <Flex>
+      <Flex flexDir={{base: "column", lg: "row"}} gap={2} mb={2}>
         <Flex justifyContent='center' alignItems='center'>
           <Heading as='h4' size='md'>Total Audiens/Ticket Sold: {audienceList.length}</Heading>
         </Flex>
         <Spacer />
-        <Flex ml="auto" gap={2}>
+        <Flex gap={2}>
           <Input 
             placeholder="Search Name or ID"
             value={search}
