@@ -194,7 +194,7 @@ const MainEvent = () => {
       <Flex gap={8} mb={12} alignItems="center">
         <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch" gap={3}>
           <QrReader
-            constraints={{ facingMode: `${cameraEnvironment}` }}
+            constraints={{ facingMode: { exact: `${cameraEnvironment}` } }}
             containerStyle={{
               width: '100%',
               flexGrow: 1,
