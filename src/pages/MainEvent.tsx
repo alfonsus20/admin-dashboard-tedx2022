@@ -48,6 +48,8 @@ const MainEvent = () => {
   const [totalData, setTotalData] = useState<number>(0);
   const [qrData, setQRData] = useState<string>('');
   const [search, setSearch] = useState<string>("");
+  const [cameraEnvironment, setCameraEnvironment] = useState<string>("environment");
+  const [camera, setCamera] = useState<boolean>(true);
 
   const page = searchParams.get('page');
   const { handleError } = useError();
@@ -117,6 +119,15 @@ const MainEvent = () => {
     setSearch(e.target.value);
   };
 
+  const handleChangeCamera = () => {
+    setCamera(!camera);
+    if(camera){
+      setCameraEnvironment("environment");
+    } else if (!camera) {
+      setCameraEnvironment("user");
+    };
+  }
+
   useEffect(() => {
     if (qrData) {
       handleFetchVisitorInfo();
@@ -181,9 +192,9 @@ const MainEvent = () => {
         </GridItem>
       </Grid>
       <Flex gap={8} mb={12} alignItems="center">
-        <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch">
+        <Flex flexDir="column" w="45%" pos="relative" alignSelf="stretch" gap={3}>
           <QrReader
-            constraints={{ facingMode: 'user' }}
+            constraints={{ facingMode: `${cameraEnvironment}` }}
             containerStyle={{
               width: '100%',
               flexGrow: 1,
@@ -199,6 +210,9 @@ const MainEvent = () => {
               }
             }}
           />
+          <Button onClick={handleChangeCamera}>
+            Switch Camera
+          </Button>
         </Flex>
         <Box w="55%">
           <TableContainer mb={4} whiteSpace="pre-wrap">
