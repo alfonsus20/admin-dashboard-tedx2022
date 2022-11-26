@@ -11,4 +11,7 @@ export type Visitor = {
   createdAt: Date;
   updatedAt: Date;
   transactionExternalId: null;
+  transaction : {
+    jenis_tiket: string;
+  };
 };

@@ -60,6 +60,7 @@ const MainEvent = () => {
       let tempVisitorList = [];
       setIsFetching(true);
       const { data } = await getAllVisitor();
+      console.log(data.data);
       for (let item of data.data) {
         if (item.qr_code){
           tempVisitorList.push(item);
@@ -288,6 +289,16 @@ const MainEvent = () => {
                   </Td>
                 </Tr>
                 <Tr>
+                  <Td>Jenis Tiket</Td>
+                  <Td>
+                    {isLoadingVisitorInfo ? (
+                      <Skeleton height={5} />
+                    ) : (
+                      visitorToBeVerified?.transaction.jenis_tiket
+                    )}
+                  </Td>
+                </Tr>
+                <Tr>
                   <Td>Status</Td>
                   <Td>
                     {isLoadingVisitorInfo ? (
@@ -326,8 +337,9 @@ const MainEvent = () => {
         </Box>
       </Flex>
       <Flex flexDir={{base: "column", lg: "row"}} gap={2} mb={2}>
-        <Flex justifyContent='center' alignItems='center'>
-          <Heading as='h4' size='md'>Total Audiens/Ticket Sold: {audienceList.length}</Heading>
+        <Flex flexDir="column" justifyContent='center' alignItems='start'>
+          <Heading as='h4' size='md'>Total Audiens: {audienceList.length}</Heading>
+          <Heading as='h4' size='md'>Audiens yang Telah di Scan: { audienceList.filter(audience => audience.is_scanned === true ).length }</Heading>
         </Flex>
         <Spacer />
         <Flex gap={2}>
@@ -351,6 +363,7 @@ const MainEvent = () => {
               <Th>Asal Instansi</Th>
               <Th>No Telepon</Th>
               <Th>Email</Th>
+              <Th>Jenis Tiket</Th>
               <Th>Status</Th>
               <Th>Action</Th>
             </Tr>
@@ -383,6 +396,9 @@ const MainEvent = () => {
                     <Td>
                       <Skeleton height="20px" />
                     </Td>
+                    <Td>
+                      <Skeleton height="20px" />
+                    </Td>
                   </Tr>
                 ))
             ) : audienceList?.length === 0 ? (
@@ -393,7 +409,7 @@ const MainEvent = () => {
               </Tr>
             ) : (
               audienceList?.map((audience, idx) => {
-                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase()) || audience.asalInstansi.toLowerCase().includes(search.toLowerCase())  || audience.namaInstansi.toLowerCase().includes(search.toLowerCase())){
+                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase()) || audience.asalInstansi.toLowerCase().includes(search.toLowerCase())  || audience.namaInstansi.toLowerCase().includes(search.toLowerCase()) || audience.transaction.jenis_tiket.toLowerCase().includes(search.toLowerCase())){
                   return (
                     <Tr key={audience.id}>
                       <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
@@ -401,6 +417,7 @@ const MainEvent = () => {
                       <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
                       <Td>{audience.nomorTelp}</Td>
                       <Td>{audience.email}</Td>
+                      <Td>{audience.transaction.jenis_tiket}</Td>
                       <Td>
                         {audience.is_scanned ? (
                           <Badge colorScheme="green" variant="solid">
