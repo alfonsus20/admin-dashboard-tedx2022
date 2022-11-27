@@ -17,7 +17,6 @@ import {
   IconButton,
   Icon,
   Grid,
-  GridItem,
   Text,
   Spacer,
 } from '@chakra-ui/react';
@@ -25,13 +24,11 @@ import { QrReader } from 'react-qr-reader';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import Pagination from '../components/Pagination';
 import useError from '../hooks/useError';
 import {
   getAllTicket,
   getAllVisitor,
   getVisitorById,
-  getVisitorList,
   verifyVisitor,
 } from '../models/mainEvent';
 import { Visitor } from '../types/entities/visitor';
@@ -45,10 +42,9 @@ const MainEvent = () => {
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [isLoadingVisitorInfo, setIsLoadingVisitorInfo] = useState<boolean>(false);
   const [visitorToBeVerified, setVisitorToBeVerified] = useState<null | Visitor>(null);
-  const [totalData, setTotalData] = useState<number>(0);
   const [qrData, setQRData] = useState<string>('');
-  const [search, setSearch] = useState<string>("");
-  const [cameraEnvironment, setCameraEnvironment] = useState<string>("environment");
+  const [search, setSearch] = useState<string>('');
+  const [cameraEnvironment, setCameraEnvironment] = useState<string>('environment');
   const [camera, setCamera] = useState<boolean>(true);
 
   const page = searchParams.get('page');
@@ -57,15 +53,9 @@ const MainEvent = () => {
 
   const handleFetch = async () => {
     try {
-      let tempVisitorList = [];
       setIsFetching(true);
       const { data } = await getAllVisitor();
-      console.log(data.data);
-      for (let item of data.data) {
-        if (item.qr_code){
-          tempVisitorList.push(item);
-        }
-      }
+      const tempVisitorList = data.data.filter((item) => item.qr_code);
       setVisitorList(tempVisitorList);
     } catch (error) {
       handleError(error);
@@ -116,18 +106,18 @@ const MainEvent = () => {
     }
   };
 
-  const handleChange = (e: { target: { value: string; }; }) => {
+  const handleChange = (e: { target: { value: string } }) => {
     setSearch(e.target.value);
   };
 
   const handleChangeCamera = () => {
     setCamera(!camera);
-    if(camera){
-      setCameraEnvironment("environment");
+    if (camera) {
+      setCameraEnvironment('environment');
     } else if (!camera) {
-      setCameraEnvironment("user");
-    };
-  }
+      setCameraEnvironment('user');
+    }
+  };
 
   useEffect(() => {
     if (qrData) {
@@ -142,12 +132,14 @@ const MainEvent = () => {
 
   return (
     <Box>
-      <Heading fontSize="3xl" mb={{ base: 6, lg: 12}}>
+      <Heading fontSize="3xl" mb={{ base: 6, lg: 12 }}>
         Main Event Attendance
       </Heading>
-      <Flex justifyContent='start' alignItems='center' mb={3}>
-          <Heading as='h4' size='md'>Ticket Sold:</Heading>
-        </Flex>
+      <Flex justifyContent="start" alignItems="center" mb={3}>
+        <Heading as="h4" size="md">
+          Ticket Sold:
+        </Heading>
+      </Flex>
       <Grid templateColumns="repeat(3, 1fr)" textAlign="center" gap={4} mb={6}>
         <Flex
           flexDir="column"
@@ -159,10 +151,10 @@ const MainEvent = () => {
           boxShadow="lg"
           borderRadius="lg"
         >
-          <Heading fontSize={{ base: "md", lg: "xl"}} color="green.500">
+          <Heading fontSize={{ base: 'md', lg: 'xl' }} color="green.500">
             Early Bird
           </Heading>
-          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
+          <Text fontSize={{ base: 'xl', lg: '4xl' }} fontWeight="medium">
             {ticketList[0]?.ticket_sold}
           </Text>
         </Flex>
@@ -177,10 +169,10 @@ const MainEvent = () => {
           borderRadius="lg"
           gridAutoColumns="max-content"
         >
-          <Heading fontSize={{ base: "md", lg: "xl"}} color="orange.400">
+          <Heading fontSize={{ base: 'md', lg: 'xl' }} color="orange.400">
             Presale 1
           </Heading>
-          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
+          <Text fontSize={{ base: 'xl', lg: '4xl' }} fontWeight="medium">
             {ticketList[1]?.ticket_sold}
           </Text>
         </Flex>
@@ -194,16 +186,28 @@ const MainEvent = () => {
           boxShadow="lg"
           borderRadius="lg"
         >
-          <Heading fontSize={{ base: "md", lg: "xl"}} color="blue.400">
+          <Heading fontSize={{ base: 'md', lg: 'xl' }} color="blue.400">
             Special Ticket
           </Heading>
-          <Text fontSize={{ base: "xl", lg: "4xl"}} fontWeight="medium">
-            {ticketList[2]?.ticket_sold}
+          <Text fontSize={{ base: 'xl', lg: '4xl' }} fontWeight="medium">
+            {ticketList[2]?.ticket_sold || 0}
           </Text>
         </Flex>
       </Grid>
-      <Flex flexDir={{ base:"column", lg: "row"}} gap={8} mb={6} alignItems="center">
-        <Flex flexDir="column" h={{ base:"300px", lg:"auto"}}  w={{ base:"100%", lg: "45%"}} pos="relative" alignSelf="stretch" gap={3}>
+      <Flex
+        flexDir={{ base: 'column', lg: 'row' }}
+        gap={8}
+        mb={6}
+        alignItems="center"
+      >
+        <Flex
+          flexDir="column"
+          h={{ base: '300px', lg: 'auto' }}
+          w={{ base: '100%', lg: '45%' }}
+          pos="relative"
+          alignSelf="stretch"
+          gap={3}
+        >
           <QrReader
             constraints={{ facingMode: `${cameraEnvironment}` }}
             containerStyle={{
@@ -221,11 +225,9 @@ const MainEvent = () => {
               }
             }}
           />
-          <Button onClick={handleChangeCamera}>
-            Switch Camera
-          </Button>
+          <Button onClick={handleChangeCamera}>Switch Camera</Button>
         </Flex>
-        <Box w={{ base: "100%", lg: "55%"}}>
+        <Box w={{ base: '100%', lg: '55%' }}>
           <TableContainer mb={4} whiteSpace="pre-wrap">
             <Table>
               <Thead>
@@ -294,7 +296,7 @@ const MainEvent = () => {
                     {isLoadingVisitorInfo ? (
                       <Skeleton height={5} />
                     ) : (
-                      visitorToBeVerified?.transaction.jenis_tiket
+                      visitorToBeVerified?.transaction?.jenis_tiket
                     )}
                   </Td>
                 </Tr>
@@ -336,17 +338,29 @@ const MainEvent = () => {
           </TableContainer>
         </Box>
       </Flex>
-      <Flex flexDir={{base: "column", lg: "row"}} gap={2} mb={2}>
-        <Flex flexDir="column" justifyContent='center' alignItems='start'>
-          <Heading as='h4' size='md'>Total Audiens: {audienceList.length}</Heading>
-          <Heading as='h4' size='md'>Audiens yang Telah di Scan: { audienceList.filter(audience => audience.is_scanned === true ).length }</Heading>
+      <Flex flexDir={{ base: 'column', lg: 'row' }} gap={2} mb={2}>
+        <Flex flexDir="column" justifyContent="center" alignItems="start">
+          <Heading as="h4" size="md">
+            Total Audiens:
+            {' '}
+            {audienceList.length}
+          </Heading>
+          <Heading as="h4" size="md">
+            Audiens yang Telah di Scan:
+            {' '}
+            {
+              audienceList.filter((audience) => audience.is_scanned === true)
+                .length
+            }
+          </Heading>
         </Flex>
         <Spacer />
         <Flex gap={2}>
-          <Input 
+          <Input
             placeholder="Search Name or ID"
             value={search}
-            onChange={handleChange} />
+            onChange={handleChange}
+          />
           <IconButton
             colorScheme="red"
             aria-label="search"
@@ -408,48 +422,63 @@ const MainEvent = () => {
                 </Td>
               </Tr>
             ) : (
-              audienceList?.map((audience, idx) => {
-                if (search == "" || audience.nama.toLowerCase().includes(search.toLowerCase()) || audience.asalInstansi.toLowerCase().includes(search.toLowerCase())  || audience.namaInstansi.toLowerCase().includes(search.toLowerCase()) || audience.transaction.jenis_tiket.toLowerCase().includes(search.toLowerCase())){
-                  return (
-                    <Tr key={audience.id}>
-                      <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
-                      <Td>{audience.nama}</Td>
-                      <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
-                      <Td>{audience.nomorTelp}</Td>
-                      <Td>{audience.email}</Td>
-                      <Td>{audience.transaction.jenis_tiket}</Td>
-                      <Td>
-                        {audience.is_scanned ? (
-                          <Badge colorScheme="green" variant="solid">
-                            Checked in
-                          </Badge>
-                        ) : (
-                          <Badge colorScheme="red" variant="solid">
-                            Not Checked in
-                          </Badge>
-                        )}
-                      </Td>
-                      <Td>
-                        {!audience.is_scanned && (
-                          <Button
-                            colorScheme="green"
-                            isLoading={isVerifying}
-                            onClick={() => handleVerify(audience.id)}
-                          >
-                            Check In
-                          </Button>
-                        )}
-                      </Td>
-                    </Tr>
-                  );
-                }
-                return null;
-              })
+              audienceList
+                ?.sort((a, b) => Number(b.is_scanned) - Number(a.is_scanned))
+                .map((audience, idx) => {
+                  if (
+                    search === ''
+                    || audience.nama
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                    || audience.asalInstansi
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                    || audience.namaInstansi
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                    || audience.transaction.jenis_tiket
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                  ) {
+                    return (
+                      <Tr key={audience.id}>
+                        <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
+                        <Td>{audience.nama}</Td>
+                        <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
+                        <Td>{audience.nomorTelp}</Td>
+                        <Td>{audience.email}</Td>
+                        <Td>{audience.transaction.jenis_tiket}</Td>
+                        <Td>
+                          {audience.is_scanned ? (
+                            <Badge colorScheme="green" variant="solid">
+                              Checked in
+                            </Badge>
+                          ) : (
+                            <Badge colorScheme="red" variant="solid">
+                              Not Checked in
+                            </Badge>
+                          )}
+                        </Td>
+                        <Td>
+                          {!audience.is_scanned && (
+                            <Button
+                              colorScheme="green"
+                              isLoading={isVerifying}
+                              onClick={() => handleVerify(audience.id)}
+                            >
+                              Check In
+                            </Button>
+                          )}
+                        </Td>
+                      </Tr>
+                    );
+                  }
+                  return null;
+                })
             )}
           </Tbody>
         </Table>
       </TableContainer>
-      <Pagination totalData={totalData} rowsPerPage={10} />
     </Box>
   );
 };
