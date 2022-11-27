@@ -97,7 +97,7 @@ const MainEvent = () => {
         description: 'Visitor was successfully checked in',
         status: 'success',
       });
-      await handleFetchVisitorInfo();
+      setVisitorToBeVerified(null);
       await handleFetch();
     } catch (error) {
       handleError(error);
