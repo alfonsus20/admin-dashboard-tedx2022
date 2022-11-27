@@ -97,7 +97,9 @@ const MainEvent = () => {
         description: 'Visitor was successfully checked in',
         status: 'success',
       });
-      setVisitorToBeVerified(null);
+      if (qrData) {
+        await handleFetchVisitorInfo();
+      }
       await handleFetch();
     } catch (error) {
       handleError(error);
