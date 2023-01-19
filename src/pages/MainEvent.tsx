@@ -21,7 +21,7 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { QrReader } from 'react-qr-reader';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import useError from '../hooks/useError';
@@ -114,11 +114,7 @@ const MainEvent = () => {
 
   const handleChangeCamera = () => {
     setCamera(!camera);
-    if (camera) {
-      setCameraEnvironment('environment');
-    } else if (!camera) {
-      setCameraEnvironment('user');
-    }
+    setCameraEnvironment(camera ? 'environment' : 'user');
   };
 
   useEffect(() => {
@@ -131,6 +127,11 @@ const MainEvent = () => {
     handleFetch();
     handleFetchTicket();
   }, [page]);
+
+  const filteredAudience = useMemo(
+    () => audienceList.filter((audience) => audience.email.toLowerCase().includes(search) || audience.nama.toLowerCase().includes(search)),
+    [search]
+  );
 
   return (
     <Box>
@@ -349,7 +350,6 @@ const MainEvent = () => {
           </Heading>
           <Heading as="h4" size="md">
             Audiens yang Telah di Scan:
-            {' '}
             {
               audienceList.filter((audience) => audience.is_scanned === true)
                 .length
@@ -424,59 +424,38 @@ const MainEvent = () => {
                 </Td>
               </Tr>
             ) : (
-              audienceList
-                ?.sort((a, b) => Number(b.is_scanned) - Number(a.is_scanned))
-                .map((audience, idx) => {
-                  if (
-                    search === ''
-                    || audience.nama
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
-                    || audience.asalInstansi
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
-                    || audience.namaInstansi
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
-                    || audience.transaction.jenis_tiket
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
-                  ) {
-                    return (
-                      <Tr key={audience.id}>
-                        <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
-                        <Td>{audience.nama}</Td>
-                        <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
-                        <Td>{audience.nomorTelp}</Td>
-                        <Td>{audience.email}</Td>
-                        <Td>{audience.transaction.jenis_tiket}</Td>
-                        <Td>
-                          {audience.is_scanned ? (
-                            <Badge colorScheme="green" variant="solid">
-                              Checked in
-                            </Badge>
-                          ) : (
-                            <Badge colorScheme="red" variant="solid">
-                              Not Checked in
-                            </Badge>
-                          )}
-                        </Td>
-                        <Td>
-                          {!audience.is_scanned && (
-                            <Button
-                              colorScheme="green"
-                              isLoading={isVerifying}
-                              onClick={() => handleVerify(audience.id)}
-                            >
-                              Check In
-                            </Button>
-                          )}
-                        </Td>
-                      </Tr>
-                    );
-                  }
-                  return null;
-                })
+              filteredAudience.map((audience, idx) => (
+                <Tr key={audience.id}>
+                  <Td>{((page ? +page : 1) - 1) * 10 + idx + 1}</Td>
+                  <Td>{audience.nama}</Td>
+                  <Td>{`${audience.asalInstansi} - ${audience.namaInstansi}`}</Td>
+                  <Td>{audience.nomorTelp}</Td>
+                  <Td>{audience.email}</Td>
+                  <Td>{audience.transaction.jenis_tiket}</Td>
+                  <Td>
+                    {audience.is_scanned ? (
+                      <Badge colorScheme="green" variant="solid">
+                        Checked in
+                      </Badge>
+                    ) : (
+                      <Badge colorScheme="red" variant="solid">
+                        Not Checked in
+                      </Badge>
+                    )}
+                  </Td>
+                  <Td>
+                    {!audience.is_scanned && (
+                      <Button
+                        colorScheme="green"
+                        isLoading={isVerifying}
+                        onClick={() => handleVerify(audience.id)}
+                      >
+                        Check In
+                      </Button>
+                    )}
+                  </Td>
+                </Tr>
+              ))
             )}
           </Tbody>
         </Table>
