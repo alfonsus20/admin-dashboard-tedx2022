@@ -2,7 +2,7 @@
 
 A website for TedxUniversitasBrawijaya 2022 content management system.
 
-## Main Tech Stack:
+## Main Tech Stack
 
 <table>
   <tr align="center">
@@ -17,7 +17,7 @@ A website for TedxUniversitasBrawijaya 2022 content management system.
   </tr>
  </table>
 
-## Screenshots:
+## Screenshots
 ![Screenshot (166)](https://user-images.githubusercontent.com/58034788/213896638-1281caa0-5ef7-4c9c-a02c-a6a478b32d79.png)
 ![Screenshot (172)](https://user-images.githubusercontent.com/58034788/213896662-e65940f8-342e-4564-aff7-b1ce7c41d910.png)
 ![Screenshot (173)](https://user-images.githubusercontent.com/58034788/213896664-e2599792-a6c9-4bbf-adb2-e9e7a5a0be79.png)
